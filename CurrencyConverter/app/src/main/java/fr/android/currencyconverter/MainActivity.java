@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             number = checkNumber(editText.getText().toString());
             if (number <= 0) {
                 Toast.makeText(this, getString(R.string.numberHigher0), Toast.LENGTH_LONG).show();
+                return;
             }
         }
         catch (Exception ignored) { }
