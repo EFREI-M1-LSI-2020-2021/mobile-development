@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CurrencyConverter</string>
+    <string name="euro">Euro</string>
+    <string name="dollar">Dollar</string>
+    <string name="amout">Amount</string>
+    <string name="convert">Convert</string>
+    <string name="enterValidNumber">Please enter a valid number</string>
+    <string name="numberHigher0">Enter a number higher than 0</string>
+    <string name="conversion">Conversion :</string>
+</resources>
