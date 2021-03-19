@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,14 +68,15 @@ public class DefaultFragment extends Fragment {
 
     public void onEqualClick(View v) {
         Expression expression = new ExpressionBuilder(this.expression.getText().toString()).build();
-        String result = "Invalid expression";
 
         try {
-            result = String.format("%s", expression.evaluate());
+            String result = String.format("%s", expression.evaluate());
+            this.result.setText(result);
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+            Toast.makeText(getContext(), "Invalid expression", Toast.LENGTH_SHORT).show();
+        }
 
-        this.result.setText(result);
         this.expression.setText("");
         buttonLayout.removeView(equalButton);
         equalButton = null;

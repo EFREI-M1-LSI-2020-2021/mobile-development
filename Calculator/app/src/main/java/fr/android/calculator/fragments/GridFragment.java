@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,14 +63,15 @@ public class GridFragment extends Fragment {
 
     public void onEqualClick(View v) {
         Expression expression = new ExpressionBuilder(this.expression.getText().toString()).build();
-        String result = "Invalid expression";
 
         try {
-            result = String.format("%s", expression.evaluate());
+            String result = String.format("%s", expression.evaluate());
+            this.result.setText(result);
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+            Toast.makeText(getContext(), "Invalid expression", Toast.LENGTH_SHORT).show();
+        }
 
-        this.result.setText(result);
         this.expression.setText("");
         equalButton.setVisibility(View.GONE);
     }
