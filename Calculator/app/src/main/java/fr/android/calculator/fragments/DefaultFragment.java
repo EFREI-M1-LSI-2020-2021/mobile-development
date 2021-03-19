@@ -61,8 +61,7 @@ public class DefaultFragment extends Fragment {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.MATCH_PARENT, 1);
             params.setMargins(8, 0, 0, 0);
-            equalButton.setLayoutParams(params);
-            buttonLayout.addView(equalButton);
+            buttonLayout.addView(equalButton, params);
         }
     }
 
