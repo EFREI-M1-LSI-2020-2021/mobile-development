@@ -6,4 +6,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="history">History</string>
     <string name="operation">Operation</string>
+    <string name="open_url">Open url</string>
+    <string name="open_custom_main_activity">Open custom main activity</string>
 </resources>

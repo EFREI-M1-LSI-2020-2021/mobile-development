@@ -50,4 +50,10 @@ public class HistoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid URL", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void openCustomMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setAction("hereismyapp");
+        startActivity(intent);
+    }
 }
