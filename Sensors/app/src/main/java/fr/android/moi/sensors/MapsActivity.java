@@ -32,6 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private String provider;
     private Marker lastMarker;
+    private Location lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             enableGPS();
             Criteria criteria = new Criteria();
             provider = locationManager.getBestProvider(criteria, false);
+            lastLocation = locationManager.getLastKnownLocation(provider);
             locationManager.requestLocationUpdates(provider, 400, 1, this);
         }
         else {
@@ -101,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        updateLastLocation();
     }
 
     @Override
@@ -110,7 +113,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lastMarker.remove();
         }
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        lastLocation = location;
+        updateLastLocation();
+    }
+
+    private void updateLastLocation() {
+        LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
