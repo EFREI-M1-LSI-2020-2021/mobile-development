@@ -85,9 +85,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(checkLocationPermission()) {
             locationManager.removeUpdates(this);
         }
-        else {
-            requestLocationPermission();
-        }
     }
 
     private boolean checkLocationPermission() {
