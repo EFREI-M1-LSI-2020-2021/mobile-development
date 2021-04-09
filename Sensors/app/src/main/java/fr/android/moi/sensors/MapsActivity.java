@@ -115,7 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void updateLastLocation() {
-        if(lastLocation != null) {
+        if(lastLocation != null && map != null) {
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
