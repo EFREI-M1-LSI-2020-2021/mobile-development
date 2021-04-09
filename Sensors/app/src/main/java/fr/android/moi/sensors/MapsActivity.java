@@ -118,12 +118,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void updateLastLocation() {
-        LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        lastMarker = map.addMarker(markerOptions);
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        if(lastLocation != null) {
+            LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Current Position");
+            lastMarker = map.addMarker(markerOptions);
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
     }
 
     @Override
