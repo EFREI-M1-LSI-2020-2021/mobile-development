@@ -1,0 +1,37 @@
+The goal of this project is to deliver a sporting app that would enable coaches to save significant information about matches and debrief objectively using statistics with their players.
+
+A good app to "copy" is "tennis tracker" (look it up - https://play.google.com/store/apps/details?id=com.nabocorp.tennistracker.android.tennistracker&hl=fr).
+
+Design constraints :
+
+1- ergnomic interface (use fragments, menus like toolbars and navigation drawers, ...), adapt the interface to landscape, portrait, french and english
+
+2- locate the matches (latitude, longitude and geocoding - transform these into a street name)
+
+3- take pictures of the match and save them locally
+
+4- save statistics locally for 5 previous matches (in a sqlite database)
+
+5- save full statistics on a real external database
+
+6- be able to display information about any previous match (read the information from the local database or the distant one)
+
+7- UP TO YOU TO DEFINE MORE FUNCTIONS  
+
+
+Submit your work here (name1_name2.zip) :
+
+1- a report containing the following information in this specific order :
+
+ - list of functions implemented
+
+ - list of functions not implemented
+
+ - possible improvements
+
+ - your app architecture, its implementation and screenshots
+
+
+2- your app code
+
+In case you project is too big to upload here, just submit the java files + XML resources (Layouts, strings) + Manifest.
