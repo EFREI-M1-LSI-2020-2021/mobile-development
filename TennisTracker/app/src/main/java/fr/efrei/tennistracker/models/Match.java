@@ -30,4 +30,20 @@ public class Match {
     public List<Set> getSets() {
         return sets;
     }
+
+    public void setLocation(MatchLocation location) {
+        this.location = location;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
+    }
 }

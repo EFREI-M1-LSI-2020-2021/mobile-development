@@ -22,4 +22,16 @@ public class Game {
     public Player getWinner() {
         return winner;
     }
+
+    public void setScorePlayer1(int scorePlayer1) {
+        this.scorePlayer1 = scorePlayer1;
+    }
+
+    public void setScorePlayer2(int scorePlayer2) {
+        this.scorePlayer2 = scorePlayer2;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
 }

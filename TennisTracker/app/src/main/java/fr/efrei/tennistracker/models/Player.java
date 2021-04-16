@@ -28,4 +28,20 @@ public class Player {
     public String getNationality() {
         return nationality;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
 }
