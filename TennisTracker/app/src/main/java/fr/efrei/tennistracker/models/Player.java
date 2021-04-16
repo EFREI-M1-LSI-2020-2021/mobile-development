@@ -3,13 +3,13 @@ package fr.efrei.tennistracker.models;
 import android.provider.BaseColumns;
 
 public class Player {
-    private int id;
+    private long id;
     private String name;
     private String firstName;
     private Sex sex;
     private String nationality;
 
-    public Player(int id, String name, String firstName, Sex sex, String nationality) {
+    public Player(long id, String name, String firstName, Sex sex, String nationality) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
@@ -19,24 +19,24 @@ public class Player {
 
     public static class PlayerEntry implements BaseColumns {
         public static final String TABLE_NAME = "players";
-        public static final String COLUMN_NAME_NAME = "name";
-        public static final String COLUMN_NAME_FIRSTNAME = "firstName";
-        public static final String COLUMN_NAME_SEX = "sex";
-        public static final String COLUMN_NAME_NATIONALITY = "nationality";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_FIRSTNAME = "firstName";
+        public static final String COLUMN_SEX = "sex";
+        public static final String COLUMN_NATIONALITY = "nationality";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
-                        COLUMN_NAME_NAME + " TEXT," +
-                        COLUMN_NAME_FIRSTNAME + " TEXT," +
-                        COLUMN_NAME_SEX + " TEXT," +
-                        COLUMN_NAME_NATIONALITY + " TEXT)";
+                        COLUMN_NAME + " TEXT," +
+                        COLUMN_FIRSTNAME + " TEXT," +
+                        COLUMN_SEX + " TEXT," +
+                        COLUMN_NATIONALITY + " TEXT)";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -56,7 +56,7 @@ public class Player {
         return nationality;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
