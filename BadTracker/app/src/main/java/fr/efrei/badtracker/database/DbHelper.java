@@ -6,7 +6,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import fr.efrei.badtracker.database.daos.MatchLocationDao;
+import fr.efrei.badtracker.database.daos.PlayerDao;
+import fr.efrei.badtracker.database.daos.SetDao;
+import fr.efrei.badtracker.database.daos.interfaces.IDao;
+import fr.efrei.badtracker.database.daos.interfaces.IMatchLocationDao;
+import fr.efrei.badtracker.database.daos.interfaces.IPlayerDao;
+import fr.efrei.badtracker.database.daos.interfaces.ISetDao;
+import fr.efrei.badtracker.models.Match.MatchEntry;
+import fr.efrei.badtracker.models.MatchLocation.MatchLocationEntry;
 import fr.efrei.badtracker.models.Player.PlayerEntry;
+import fr.efrei.badtracker.models.Set.SetEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -15,8 +28,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static DbHelper dbHelper;
 
+    private final Map<Class<? extends IDao>, IDao> daos = new HashMap<>();
+
     private DbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        daos.put(IPlayerDao.class, new PlayerDao(this));
+        daos.put(IMatchLocationDao.class, new MatchLocationDao(this));
+        daos.put(ISetDao.class, new SetDao(this));
     }
 
     public DbHelper getInstance(Context context) {
@@ -26,14 +44,24 @@ public class DbHelper extends SQLiteOpenHelper {
         return dbHelper;
     }
 
+    public <T extends IDao> T getDao(Class<T> key) {
+        return (T) daos.get(key);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(PlayerEntry.SQL_CREATE_ENTRIES);
+        db.execSQL(MatchLocationEntry.SQL_CREATE_ENTRIES);
+        db.execSQL(MatchEntry.SQL_CREATE_ENTRIES);
+        db.execSQL(SetEntry.SQL_CREATE_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(PlayerEntry.SQL_DELETE_ENTRIES);
+        db.execSQL(MatchLocationEntry.SQL_DELETE_ENTRIES);
+        db.execSQL(MatchEntry.SQL_DELETE_ENTRIES);
+        db.execSQL(SetEntry.SQL_DELETE_ENTRIES);
         onCreate(db);
     }
 

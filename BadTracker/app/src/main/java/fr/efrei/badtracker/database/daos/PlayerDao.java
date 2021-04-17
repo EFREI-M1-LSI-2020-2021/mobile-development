@@ -1,41 +1,41 @@
-package fr.efrei.badtracker.database.dao;
+package fr.efrei.badtracker.database.daos;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import fr.efrei.badtracker.database.DbHelper;
+import fr.efrei.badtracker.database.daos.interfaces.IPlayerDao;
 import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Player.PlayerEntry;
 import fr.efrei.badtracker.models.Sex;
 
-public class PlayerDao implements IDao<Player> {
-
-    private DbHelper dbHelper;
+public class PlayerDao extends EntityDao<Player> implements IPlayerDao {
 
     public PlayerDao(DbHelper dbHelper) {
-        this.dbHelper = dbHelper;
+        super(dbHelper);
     }
 
     @Override
-    public long add(Player entity) {
+    public long add(Player player) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(PlayerEntry.COLUMN_NAME, entity.getName());
-        values.put(PlayerEntry.COLUMN_FIRSTNAME, entity.getFirstName());
-        values.put(PlayerEntry.COLUMN_SEX, entity.getSex().toString());
-        values.put(PlayerEntry.COLUMN_NATIONALITY, entity.getNationality());
+        values.put(PlayerEntry.COLUMN_NAME, player.getName());
+        values.put(PlayerEntry.COLUMN_FIRST_NAME, player.getFirstName());
+        values.put(PlayerEntry.COLUMN_SEX, player.getSex().toString());
+        values.put(PlayerEntry.COLUMN_NATIONALITY, player.getNationality());
 
         return db.insert(PlayerEntry.TABLE_NAME, null, values);
     }
 
     @Override
-    public int delete(Player entity) {
+    public int delete(Player player) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String selection = PlayerEntry._ID + " = ?";
-        String[] selectionArgs = { "" + entity.getId() };
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = { "" + player.getId() };
 
         return db.delete(PlayerEntry.TABLE_NAME, selection, selectionArgs);
     }
@@ -47,7 +47,7 @@ public class PlayerDao implements IDao<Player> {
         String[] projection = {
                 PlayerEntry._ID,
                 PlayerEntry.COLUMN_NAME,
-                PlayerEntry.COLUMN_FIRSTNAME,
+                PlayerEntry.COLUMN_FIRST_NAME,
                 PlayerEntry.COLUMN_SEX,
                 PlayerEntry.COLUMN_NATIONALITY
         };
@@ -65,18 +65,22 @@ public class PlayerDao implements IDao<Player> {
                 null
         );
 
+        if(cursor == null) {
+            return null;
+        }
+
         return getFromCursor(cursor);
     }
 
     @Override
-    public Player getFromCursor(Cursor cursor) {
+    protected Player getFromCursor(Cursor cursor) {
         if(!cursor.moveToNext()) {
             return null;
         }
 
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(PlayerEntry._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NAME));
-        String firstName = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_FIRSTNAME));
+        String firstName = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_FIRST_NAME));
         String sexString = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_SEX));
         Sex sex = Enum.valueOf(Sex.class, sexString);
         String nationality = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NATIONALITY));

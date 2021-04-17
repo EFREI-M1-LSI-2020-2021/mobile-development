@@ -10,7 +10,11 @@ public class Player {
     private String nationality;
 
     public Player(long id, String name, String firstName, Sex sex, String nationality) {
+        this(name, firstName, sex, nationality);
         this.id = id;
+    }
+
+    public Player(String name, String firstName, Sex sex, String nationality) {
         this.name = name;
         this.firstName = firstName;
         this.sex = sex;
@@ -20,7 +24,7 @@ public class Player {
     public static class PlayerEntry implements BaseColumns {
         public static final String TABLE_NAME = "players";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_FIRSTNAME = "firstName";
+        public static final String COLUMN_FIRST_NAME = "firstName";
         public static final String COLUMN_SEX = "sex";
         public static final String COLUMN_NATIONALITY = "nationality";
 
@@ -28,7 +32,7 @@ public class Player {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
                         COLUMN_NAME + " TEXT," +
-                        COLUMN_FIRSTNAME + " TEXT," +
+                        COLUMN_FIRST_NAME + " TEXT," +
                         COLUMN_SEX + " TEXT," +
                         COLUMN_NATIONALITY + " TEXT)";
 
