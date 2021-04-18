@@ -39,6 +39,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         long loserId = playerDao.add(match.getLoser());
 
         ContentValues values = new ContentValues();
+        values.put(MatchEntry.COLUMN_NAME, match.getName());
         values.put(MatchEntry.COLUMN_LOCATION, matchLocationId);
         values.put(MatchEntry.COLUMN_WINNER, winnerId);
         values.put(MatchEntry.COLUMN_LOSER, loserId);
@@ -69,6 +70,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
 
         String[] projection = {
                 MatchEntry._ID,
+                MatchEntry.COLUMN_NAME,
                 MatchEntry.COLUMN_LOCATION,
                 MatchEntry.COLUMN_WINNER,
                 MatchEntry.COLUMN_LOSER
@@ -101,15 +103,16 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         }
 
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
-        long locationId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
-        long winnerId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
-        long loserId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NAME));
+        long locationId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOCATION));
+        long winnerId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_WINNER));
+        long loserId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOSER));
 
         MatchLocation location = matchLocationDao.getById(locationId);
         Player winner = playerDao.getById(winnerId);
         Player loser = playerDao.getById(loserId);
         List<Set> sets = setDao.getMatchSets(id);
 
-        return new Match(id, location, winner, loser, sets);
+        return new Match(id, name, location, winner, loser, sets);
     }
 }

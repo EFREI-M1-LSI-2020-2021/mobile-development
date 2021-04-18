@@ -6,17 +6,19 @@ import java.util.List;
 
 public class Match {
     private long id;
+    private String name;
     private MatchLocation location;
     private Player winner;
     private Player loser;
     private List<Set> sets;
 
-    public Match(long id, MatchLocation location, Player winner, Player loser, List<Set> sets) {
-        this(location, winner, loser, sets);
+    public Match(long id, String name, MatchLocation location, Player winner, Player loser, List<Set> sets) {
+        this(name, location, winner, loser, sets);
         this.id = id;
     }
 
-    public Match(MatchLocation location, Player winner, Player loser, List<Set> sets) {
+    public Match(String name, MatchLocation location, Player winner, Player loser, List<Set> sets) {
+        this.name = name;
         this.location = location;
         this.winner = winner;
         this.loser = loser;
@@ -25,6 +27,7 @@ public class Match {
 
     public static class MatchEntry implements BaseColumns {
         public static final String TABLE_NAME = "matches";
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_LOCATION = "location";
         public static final String COLUMN_WINNER = "winner";
         public static final String COLUMN_LOSER = "loser";
@@ -32,6 +35,7 @@ public class Match {
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
+                        COLUMN_NAME + " TEXT," +
                         COLUMN_LOCATION + " INTEGER," +
                         COLUMN_WINNER + " INTEGER," +
                         COLUMN_LOSER + " INTEGER)";
@@ -42,6 +46,10 @@ public class Match {
 
     public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public MatchLocation getLocation() {
@@ -62,6 +70,10 @@ public class Match {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setLocation(MatchLocation location) {
