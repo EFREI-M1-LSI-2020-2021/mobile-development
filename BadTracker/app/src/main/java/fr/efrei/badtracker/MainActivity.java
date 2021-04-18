@@ -2,27 +2,14 @@ package fr.efrei.badtracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 
-import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.efrei.badtracker.database.DbHelper;
-import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
-import fr.efrei.badtracker.models.Match;
-import fr.efrei.badtracker.models.MatchLocation;
-import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Set;
-import fr.efrei.badtracker.models.Sex;
-
 public class MainActivity extends AppCompatActivity {
-
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,65 +17,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new PageAdpater(getSupportFragmentManager()));
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupWithNavController(
+                toolbar, navController, appBarConfiguration);
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.getTabAt(position).select();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        DbHelper dbHelper = DbHelper.getInstance(this);
-
-        IMatchDao matchDao = dbHelper.getDao(IMatchDao.class);
-        matchDao.add(new Match(
-                "Test",
-                new MatchLocation(12, 12, "Street"),
-                new ArrayList<Player>() {{
-                    add(new Player("REMEUR", "JM", Sex.Male, "FR"));
-                }},
-                new ArrayList<Player>() {{
-                    add(new Player("LACAZE", "Thomas", Sex.Male, "FR"));
-                }},
-                new ArrayList<Set>() {{
-                    add(new Set(21, 2));
-                    add(new Set(21, 1));
-                }}
-        ));
-
-        List<Match> matches = matchDao.getAll();
-        System.out.println(matches);
     }
 }

@@ -3,4 +3,7 @@
     <string name="last_matches">Last matches</string>
     <string name="matches_map">Matches map</string>
     <string name="add_a_new_match">Add a new match</string>
+    <string name="dialog_title_match_type">Select a match type</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

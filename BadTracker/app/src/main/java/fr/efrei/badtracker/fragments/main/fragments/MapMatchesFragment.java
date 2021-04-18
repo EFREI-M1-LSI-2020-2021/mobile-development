@@ -1,4 +1,4 @@
-package fr.efrei.badtracker.fragments;
+package fr.efrei.badtracker.fragments.main.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
