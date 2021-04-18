@@ -72,23 +72,19 @@ public class MainActivity extends AppCompatActivity {
 
         DbHelper dbHelper = DbHelper.getInstance(this);
 
-        List<Player> winners = new ArrayList<Player>() {{
-            add(new Player("REMEUR", "JM", Sex.Male, "FR"));
-        }};
-
-        List<Player> losers = new ArrayList<Player>() {{
-            add(new Player("LACAZE", "Thomas", Sex.Male, "FR"));
-        }};
-
         IMatchDao matchDao = dbHelper.getDao(IMatchDao.class);
         matchDao.add(new Match(
                 "Test",
                 new MatchLocation(12, 12, "Street"),
-                winners,
-                losers,
+                new ArrayList<Player>() {{
+                    add(new Player("REMEUR", "JM", Sex.Male, "FR"));
+                }},
+                new ArrayList<Player>() {{
+                    add(new Player("LACAZE", "Thomas", Sex.Male, "FR"));
+                }},
                 new ArrayList<Set>() {{
-                    add(new Set(21, 2, winners, losers));
-                    add(new Set(21, 1, winners, losers));
+                    add(new Set(21, 2));
+                    add(new Set(21, 1));
                 }}
         ));
 

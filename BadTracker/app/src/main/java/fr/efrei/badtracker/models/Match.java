@@ -8,22 +8,22 @@ public class Match {
     private long id;
     private String name;
     private MatchLocation location;
-    private List<Player> winners;
-    private List<Player> losers;
+    private List<Player> team1;
+    private List<Player> team2;
     private List<Set> sets;
 
-    public Match(long id, String name, MatchLocation location, List<Player> winners,
-                 List<Player> losers, List<Set> sets) {
-        this(name, location, winners, losers, sets);
+    public Match(long id, String name, MatchLocation location, List<Player> team1,
+                 List<Player> team2, List<Set> sets) {
+        this(name, location, team1, team2, sets);
         this.id = id;
     }
 
-    public Match(String name, MatchLocation location, List<Player> winners, List<Player> losers,
+    public Match(String name, MatchLocation location, List<Player> team1, List<Player> team2,
                  List<Set> sets) {
         this.name = name;
         this.location = location;
-        this.winners = winners;
-        this.losers = losers;
+        this.team1 = team1;
+        this.team2 = team2;
         this.sets = sets;
     }
 
@@ -54,12 +54,12 @@ public class Match {
         return location;
     }
 
-    public List<Player> getWinners() {
-        return winners;
+    public List<Player> getTeam1() {
+        return team1;
     }
 
-    public List<Player> getLosers() {
-        return losers;
+    public List<Player> getTeam2() {
+        return team2;
     }
 
     public List<Set> getSets() {
@@ -78,12 +78,12 @@ public class Match {
         this.location = location;
     }
 
-    public void setWinners(List<Player> winners) {
-        this.winners = winners;
+    public void setTeam1(List<Player> team1) {
+        this.team1 = team1;
     }
 
-    public void setLosers(List<Player> losers) {
-        this.losers = losers;
+    public void setTeam2(List<Player> team2) {
+        this.team2 = team2;
     }
 
     public void setSets(List<Set> sets) {

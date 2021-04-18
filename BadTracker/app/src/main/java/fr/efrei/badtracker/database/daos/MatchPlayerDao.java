@@ -21,7 +21,7 @@ public class MatchPlayerDao extends EntityDao<MatchPlayer> implements IMatchPlay
     protected MatchPlayer getFromCursor(Cursor cursor) {
         long matchId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchPlayerEntry.COLUMN_MATCH));
         long playerId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchPlayerEntry.COLUMN_PLAYER));
-        int winner = cursor.getInt(cursor.getColumnIndexOrThrow(MatchPlayerEntry.COLUMN_WINNER));
+        int winner = cursor.getInt(cursor.getColumnIndexOrThrow(MatchPlayerEntry.COLUMN_FIRST_TEAM));
 
         return new MatchPlayer(matchId, playerId, winner > 0);
     }
@@ -33,7 +33,7 @@ public class MatchPlayerDao extends EntityDao<MatchPlayer> implements IMatchPlay
         ContentValues values = new ContentValues();
         values.put(MatchPlayerEntry.COLUMN_MATCH, matchPlayer.getMatchId());
         values.put(MatchPlayerEntry.COLUMN_PLAYER, matchPlayer.getPlayerId());
-        values.put(MatchPlayerEntry.COLUMN_WINNER, matchPlayer.isWinner());
+        values.put(MatchPlayerEntry.COLUMN_FIRST_TEAM, matchPlayer.isFirstTeam());
 
         return db.insert(MatchPlayerEntry.TABLE_NAME, null, values);
     }
@@ -48,7 +48,7 @@ public class MatchPlayerDao extends EntityDao<MatchPlayer> implements IMatchPlay
         String[] projection = {
                 MatchPlayerEntry.COLUMN_MATCH,
                 MatchPlayerEntry.COLUMN_PLAYER,
-                MatchPlayerEntry.COLUMN_WINNER
+                MatchPlayerEntry.COLUMN_FIRST_TEAM
         };
 
         Cursor cursor = db.query(

@@ -10,50 +10,32 @@ import java.util.List;
 import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.database.daos.interfaces.IPlayerDao;
 import fr.efrei.badtracker.database.daos.interfaces.ISetDao;
-import fr.efrei.badtracker.database.daos.interfaces.ISetPlayerDao;
 import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
 import fr.efrei.badtracker.models.Set.SetEntry;
-import fr.efrei.badtracker.models.SetPlayer;
 
 public class SetDao extends EntityDao<Set> implements ISetDao {
 
     private final IPlayerDao playerDao;
-    private final ISetPlayerDao setPlayerDao;
 
     private static final String[] projectionAll = {
             SetEntry._ID,
-            SetEntry.COLUMN_SCORE_WINNER,
-            SetEntry.COLUMN_SCORE_LOSER,
+            SetEntry.COLUMN_SCORE_TEAM1,
+            SetEntry.COLUMN_SCORE_TEAM2
     };
 
     public SetDao(DbHelper dbHelper) {
         super(dbHelper);
         playerDao = dbHelper.getDao(IPlayerDao.class);
-        setPlayerDao = dbHelper.getDao(ISetPlayerDao.class);
     }
 
     @Override
     protected Set getFromCursor(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry._ID));
-        int scoreWinner = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_WINNER));
-        int scoreLoser = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_LOSER));
+        int scoreTeam1 = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_TEAM1));
+        int scoreTeam2 = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_TEAM2));
 
-        List<SetPlayer> setPlayers = setPlayerDao.getSetPlayers(id);
-        List<Player> winners = new ArrayList<>();
-        List<Player> losers = new ArrayList<>();
-
-        for(SetPlayer setPlayer : setPlayers) {
-            Player player = playerDao.getById(setPlayer.getPlayerId());
-            if(setPlayer.isWinner()) {
-                winners.add(player);
-            }
-            else {
-                losers.add(player);
-            }
-        }
-
-        return new Set(id, scoreWinner, scoreLoser, winners, losers);
+        return new Set(id, scoreTeam1, scoreTeam2);
     }
 
     @Override
@@ -61,20 +43,12 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreWinner());
-        values.put(SetEntry.COLUMN_SCORE_LOSER, set.getScoreLoser());
+        values.put(SetEntry.COLUMN_SCORE_TEAM1, set.getScoreTeam1());
+        values.put(SetEntry.COLUMN_SCORE_TEAM2, set.getScoreTeam2());
         values.put(SetEntry.COLUMN_MATCH, matchId);
 
         long setId = db.insert(SetEntry.TABLE_NAME, null, values);
         set.setId(setId);
-
-        for(Player player : set.getWinners()) {
-            setPlayerDao.add(new SetPlayer(setId, player.getId(), true));
-        }
-
-        for(Player player : set.getLosers()) {
-            setPlayerDao.add(new SetPlayer(setId, player.getId(), false));
-        }
 
         return setId;
     }

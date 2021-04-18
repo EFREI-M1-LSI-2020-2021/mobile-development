@@ -51,22 +51,22 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         MatchLocation location = matchLocationDao.getById(locationId);
 
         List<MatchPlayer> matchPlayers = matchPlayerDao.getMatchPlayers(id);
-        List<Player> winners = new ArrayList<>();
-        List<Player> losers = new ArrayList<>();
+        List<Player> team1 = new ArrayList<>();
+        List<Player> team2 = new ArrayList<>();
 
         for(MatchPlayer matchPlayer : matchPlayers) {
             Player player = playerDao.getById(matchPlayer.getPlayerId());
-            if(matchPlayer.isWinner()) {
-                winners.add(player);
+            if(matchPlayer.isFirstTeam()) {
+                team1.add(player);
             }
             else {
-                losers.add(player);
+                team2.add(player);
             }
         }
 
         List<Set> sets = setDao.getMatchSets(id);
 
-        return new Match(id, name, location, winners, losers, sets);
+        return new Match(id, name, location, team1, team2, sets);
     }
 
     @Override
@@ -82,13 +82,13 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         long matchId = db.insert(MatchEntry.TABLE_NAME, null, values);
         match.setId(matchId);
 
-        for(Player player : match.getWinners()) {
+        for(Player player : match.getTeam1()) {
             long playerId = playerDao.add(player);
             matchPlayerDao.add(new MatchPlayer(matchId, playerId, true));
             player.setId(playerId);
         }
 
-        for(Player player : match.getLosers()) {
+        for(Player player : match.getTeam2()) {
             long playerId = playerDao.add(player);
             matchPlayerDao.add(new MatchPlayer(matchId, playerId, false));
             player.setId(playerId);

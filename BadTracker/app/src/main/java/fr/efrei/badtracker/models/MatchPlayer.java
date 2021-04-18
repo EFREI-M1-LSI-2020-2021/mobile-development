@@ -8,19 +8,19 @@ import fr.efrei.badtracker.models.Match.MatchEntry;
 public class MatchPlayer {
     private long matchId;
     private long playerId;
-    private boolean winner;
+    private boolean firstTeam;
 
-    public MatchPlayer(long matchId, long playerId, boolean winner) {
+    public MatchPlayer(long matchId, long playerId, boolean firstTeam) {
         this.matchId = matchId;
         this.playerId = playerId;
-        this.winner = winner;
+        this.firstTeam = firstTeam;
     }
 
     public static class MatchPlayerEntry implements BaseColumns {
         public static final String TABLE_NAME = "match_players";
         public static final String COLUMN_MATCH = "matchId";
         public static final String COLUMN_PLAYER = "playerId";
-        public static final String COLUMN_WINNER = "winner";
+        public static final String COLUMN_FIRST_TEAM = "firstTeam";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -30,7 +30,7 @@ public class MatchPlayer {
                         COLUMN_PLAYER + " INTEGER NOT NULL REFERENCES " +
                         PlayerEntry.TABLE_NAME + "(" + PlayerEntry._ID + ") " +
                         "ON DELETE CASCADE," +
-                        COLUMN_WINNER + " INTEGER NOT NULL," +
+                        COLUMN_FIRST_TEAM + " INTEGER NOT NULL," +
                         "PRIMARY KEY (" + COLUMN_MATCH + "," + COLUMN_PLAYER + ")" +
                         ");";
 
@@ -46,8 +46,8 @@ public class MatchPlayer {
         return playerId;
     }
 
-    public boolean isWinner() {
-        return winner;
+    public boolean isFirstTeam() {
+        return firstTeam;
     }
 
     public void setMatchId(long matchId) {
@@ -58,7 +58,7 @@ public class MatchPlayer {
         this.playerId = playerId;
     }
 
-    public void setWinner(boolean winner) {
-        this.winner = winner;
+    public void setFirstTeam(boolean firstTeam) {
+        this.firstTeam = firstTeam;
     }
 }

@@ -7,34 +7,30 @@ import fr.efrei.badtracker.models.Match.MatchEntry;
 
 public class Set {
     private long id;
-    private int scoreWinner;
-    private int scoreLoser;
-    private List<Player> winners;
-    private List<Player> losers;
+    private int scoreTeam1;
+    private int scoreTeam2;
 
-    public Set(long id, int scoreWinner, int scoreLoser, List<Player> winners, List<Player> losers) {
-        this(scoreWinner, scoreLoser, winners, losers);
+    public Set(long id, int scoreTeam1, int scoreTeam2) {
+        this(scoreTeam1, scoreTeam2);
         this.id = id;
     }
 
-    public Set(int scoreWinner, int scoreLoser, List<Player> winners, List<Player> losers) {
-        this.scoreWinner = scoreWinner;
-        this.scoreLoser = scoreLoser;
-        this.winners = winners;
-        this.losers = losers;
+    public Set(int scoreTeam1, int scoreTeam2) {
+        this.scoreTeam1 = scoreTeam1;
+        this.scoreTeam2 = scoreTeam2;
     }
 
     public static class SetEntry implements BaseColumns {
         public static final String TABLE_NAME = "sets";
-        public static final String COLUMN_SCORE_WINNER = "scoreWinner";
-        public static final String COLUMN_SCORE_LOSER = "scoreLoser";
+        public static final String COLUMN_SCORE_TEAM1 = "scoreTeam1";
+        public static final String COLUMN_SCORE_TEAM2 = "scoreTeam2";
         public static final String COLUMN_MATCH = "matchId";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
-                        COLUMN_SCORE_WINNER + " INTEGER NOT NULL," +
-                        COLUMN_SCORE_LOSER + " INTEGER NOT NULL," +
+                        COLUMN_SCORE_TEAM1 + " INTEGER NOT NULL," +
+                        COLUMN_SCORE_TEAM2 + " INTEGER NOT NULL," +
                         COLUMN_MATCH + " INTEGER NOT NULL REFERENCES " +
                         MatchEntry.TABLE_NAME + "(" + MatchEntry._ID + ") " +
                         "ON DELETE CASCADE" +
@@ -48,39 +44,23 @@ public class Set {
         return id;
     }
 
-    public int getScoreWinner() {
-        return scoreWinner;
+    public int getScoreTeam1() {
+        return scoreTeam1;
     }
 
-    public int getScoreLoser() {
-        return scoreLoser;
-    }
-
-    public List<Player> getWinners() {
-        return winners;
-    }
-
-    public List<Player> getLosers() {
-        return losers;
+    public int getScoreTeam2() {
+        return scoreTeam2;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setScoreWinner(int scoreWinner) {
-        this.scoreWinner = scoreWinner;
+    public void setScoreTeam1(int scoreTeam1) {
+        this.scoreTeam1 = scoreTeam1;
     }
 
-    public void setScoreLoser(int scoreLoser) {
-        this.scoreLoser = scoreLoser;
-    }
-
-    public void setWinners(List<Player> winners) {
-        this.winners = winners;
-    }
-
-    public void setLosers(List<Player> losers) {
-        this.losers = losers;
+    public void setScoreTeam2(int scoreTeam2) {
+        this.scoreTeam2 = scoreTeam2;
     }
 }
