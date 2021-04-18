@@ -4,30 +4,70 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchLocationDao;
+import fr.efrei.badtracker.database.daos.interfaces.IMatchPlayerDao;
 import fr.efrei.badtracker.database.daos.interfaces.IPlayerDao;
 import fr.efrei.badtracker.database.daos.interfaces.ISetDao;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.Match.MatchEntry;
 import fr.efrei.badtracker.models.MatchLocation;
+import fr.efrei.badtracker.models.MatchPlayer;
 import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
+import fr.efrei.badtracker.models.SetPlayer;
 
 public class MatchDao extends EntityDao<Match> implements IMatchDao {
 
     private IMatchLocationDao matchLocationDao;
     private IPlayerDao playerDao;
     private ISetDao setDao;
+    private IMatchPlayerDao matchPlayerDao;
+
+    private static final String[] projectionAll = {
+            MatchEntry._ID,
+            MatchEntry.COLUMN_NAME,
+            MatchEntry.COLUMN_LOCATION,
+    };
 
     public MatchDao(DbHelper dbHelper) {
         super(dbHelper);
         matchLocationDao = dbHelper.getDao(IMatchLocationDao.class);
         playerDao = dbHelper.getDao(IPlayerDao.class);
         setDao = dbHelper.getDao(ISetDao.class);
+        matchPlayerDao = dbHelper.getDao(IMatchPlayerDao.class);
+    }
+
+    @Override
+    protected Match getFromCursor(Cursor cursor) {
+
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NAME));
+        long locationId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOCATION));
+
+        MatchLocation location = matchLocationDao.getById(locationId);
+
+        List<MatchPlayer> matchPlayers = matchPlayerDao.getMatchPlayers(id);
+        List<Player> winners = new ArrayList<>();
+        List<Player> losers = new ArrayList<>();
+
+        for(MatchPlayer matchPlayer : matchPlayers) {
+            Player player = playerDao.getById(matchPlayer.getPlayerId());
+            if(matchPlayer.isWinner()) {
+                winners.add(player);
+            }
+            else {
+                losers.add(player);
+            }
+        }
+
+        List<Set> sets = setDao.getMatchSets(id);
+
+        return new Match(id, name, location, winners, losers, sets);
     }
 
     @Override
@@ -35,16 +75,25 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         long matchLocationId = matchLocationDao.add(match.getLocation());
-        long winnerId = playerDao.add(match.getWinner());
-        long loserId = playerDao.add(match.getLoser());
 
         ContentValues values = new ContentValues();
         values.put(MatchEntry.COLUMN_NAME, match.getName());
         values.put(MatchEntry.COLUMN_LOCATION, matchLocationId);
-        values.put(MatchEntry.COLUMN_WINNER, winnerId);
-        values.put(MatchEntry.COLUMN_LOSER, loserId);
 
         long matchId = db.insert(MatchEntry.TABLE_NAME, null, values);
+        match.setId(matchId);
+
+        for(Player player : match.getWinners()) {
+            long playerId = playerDao.add(player);
+            matchPlayerDao.add(new MatchPlayer(matchId, playerId, true));
+            player.setId(playerId);
+        }
+
+        for(Player player : match.getLosers()) {
+            long playerId = playerDao.add(player);
+            matchPlayerDao.add(new MatchPlayer(matchId, playerId, false));
+            player.setId(playerId);
+        }
 
         for(Set set : match.getSets()) {
             long setId = setDao.add(matchId, set);
@@ -52,6 +101,33 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         }
 
         return matchId;
+    }
+
+    @Override
+    public List<Match> getAll() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                MatchEntry.TABLE_NAME,
+                projectionAll,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        if(cursor == null) {
+            return null;
+        }
+
+        List<Match> matches = new ArrayList<>();
+
+        while(cursor.moveToNext()) {
+            matches.add(getFromCursor(cursor));
+        }
+
+        return matches;
     }
 
     @Override
@@ -68,20 +144,12 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
     public Match getById(long id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = {
-                MatchEntry._ID,
-                MatchEntry.COLUMN_NAME,
-                MatchEntry.COLUMN_LOCATION,
-                MatchEntry.COLUMN_WINNER,
-                MatchEntry.COLUMN_LOSER
-        };
-
         String selection = MatchEntry._ID + " = ?";
         String[] selectionArgs = { "" + id };
 
         Cursor cursor = db.query(
                 MatchEntry.TABLE_NAME,
-                projection,
+                projectionAll,
                 selection,
                 selectionArgs,
                 null,
@@ -98,22 +166,5 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         }
 
         return getFromCursor(cursor);
-    }
-
-    @Override
-    protected Match getFromCursor(Cursor cursor) {
-
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NAME));
-        long locationId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOCATION));
-        long winnerId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_WINNER));
-        long loserId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOSER));
-
-        MatchLocation location = matchLocationDao.getById(locationId);
-        Player winner = playerDao.getById(winnerId);
-        Player loser = playerDao.getById(loserId);
-        List<Set> sets = setDao.getMatchSets(id);
-
-        return new Match(id, name, location, winner, loser, sets);
     }
 }

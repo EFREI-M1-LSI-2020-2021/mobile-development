@@ -2,41 +2,43 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import java.util.List;
+import fr.efrei.badtracker.models.Match.MatchEntry;
+
 public class Set {
     private long id;
     private int scoreWinner;
     private int scoreLoser;
-    private Player winner;
-    private Player loser;
+    private List<Player> winners;
+    private List<Player> losers;
 
-    public Set(long id, int scoreWinner, int scoreLoser, Player winner, Player loser) {
-        this(scoreWinner, scoreLoser, winner, loser);
+    public Set(long id, int scoreWinner, int scoreLoser, List<Player> winners, List<Player> losers) {
+        this(scoreWinner, scoreLoser, winners, losers);
         this.id = id;
     }
 
-    public Set(int scoreWinner, int scoreLoser, Player winner, Player loser) {
+    public Set(int scoreWinner, int scoreLoser, List<Player> winners, List<Player> losers) {
         this.scoreWinner = scoreWinner;
         this.scoreLoser = scoreLoser;
-        this.winner = winner;
-        this.loser = loser;
+        this.winners = winners;
+        this.losers = losers;
     }
 
     public static class SetEntry implements BaseColumns {
         public static final String TABLE_NAME = "sets";
         public static final String COLUMN_SCORE_WINNER = "scoreWinner";
         public static final String COLUMN_SCORE_LOSER = "scoreLoser";
-        public static final String COLUMN_WINNER = "winner";
-        public static final String COLUMN_LOSER = "street";
         public static final String COLUMN_MATCH = "match";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
-                        COLUMN_SCORE_WINNER + " INTEGER," +
-                        COLUMN_SCORE_LOSER + " INTEGER," +
-                        COLUMN_WINNER + " INTEGER," +
-                        COLUMN_LOSER + " INTEGER)" +
-                        COLUMN_MATCH + " INTEGER)";
+                        COLUMN_SCORE_WINNER + " INTEGER NOT NULL," +
+                        COLUMN_SCORE_LOSER + " INTEGER NOT NULL," +
+                        COLUMN_MATCH + " INTEGER NOT NULL REFERENCES " +
+                        MatchEntry.TABLE_NAME + "(" + MatchEntry._ID + ") " +
+                        "ON DELETE CASCADE," +
+                        ")";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -54,12 +56,12 @@ public class Set {
         return scoreLoser;
     }
 
-    public Player getWinner() {
-        return winner;
+    public List<Player> getWinners() {
+        return winners;
     }
 
-    public Player getLoser() {
-        return loser;
+    public List<Player> getLosers() {
+        return losers;
     }
 
     public void setId(long id) {
@@ -74,11 +76,11 @@ public class Set {
         this.scoreLoser = scoreLoser;
     }
 
-    public void setWinner(Player winner) {
-        this.winner = winner;
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
     }
 
-    public void setLoser(Player loser) {
-        this.loser = loser;
+    public void setLosers(List<Player> losers) {
+        this.losers = losers;
     }
 }

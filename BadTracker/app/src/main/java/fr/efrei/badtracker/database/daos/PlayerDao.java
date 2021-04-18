@@ -18,6 +18,18 @@ public class PlayerDao extends EntityDao<Player> implements IPlayerDao {
     }
 
     @Override
+    protected Player getFromCursor(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(PlayerEntry._ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NAME));
+        String firstName = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_FIRST_NAME));
+        String sexString = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_SEX));
+        Sex sex = Enum.valueOf(Sex.class, sexString);
+        String nationality = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NATIONALITY));
+
+        return new Player(id, name, firstName, sex, nationality);
+    }
+
+    @Override
     public long add(Player player) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -74,17 +86,5 @@ public class PlayerDao extends EntityDao<Player> implements IPlayerDao {
         }
 
         return getFromCursor(cursor);
-    }
-
-    @Override
-    protected Player getFromCursor(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(PlayerEntry._ID));
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NAME));
-        String firstName = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_FIRST_NAME));
-        String sexString = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_SEX));
-        Sex sex = Enum.valueOf(Sex.class, sexString);
-        String nationality = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NATIONALITY));
-
-        return new Player(id, name, firstName, sex, nationality);
     }
 }

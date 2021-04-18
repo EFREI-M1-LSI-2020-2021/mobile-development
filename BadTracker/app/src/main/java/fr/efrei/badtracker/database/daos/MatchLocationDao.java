@@ -15,6 +15,17 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
     }
 
     @Override
+    protected MatchLocation getFromCursor(Cursor cursor) {
+
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchLocationEntry._ID));
+        double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LATITUDE));
+        double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LONGITUDE));
+        String street = cursor.getString(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_STREET));
+
+        return new MatchLocation(id, latitude, longitude, street);
+    }
+
+    @Override
     public long add(MatchLocation matchLocation) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -69,16 +80,5 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
         }
 
         return getFromCursor(cursor);
-    }
-
-    @Override
-    protected MatchLocation getFromCursor(Cursor cursor) {
-
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchLocationEntry._ID));
-        double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LATITUDE));
-        double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LONGITUDE));
-        String street = cursor.getString(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_STREET));
-
-        return new MatchLocation(id, latitude, longitude, street);
     }
 }

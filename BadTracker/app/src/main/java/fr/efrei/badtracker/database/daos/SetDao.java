@@ -10,38 +10,71 @@ import java.util.List;
 import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.database.daos.interfaces.IPlayerDao;
 import fr.efrei.badtracker.database.daos.interfaces.ISetDao;
+import fr.efrei.badtracker.database.daos.interfaces.ISetPlayerDao;
 import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
 import fr.efrei.badtracker.models.Set.SetEntry;
+import fr.efrei.badtracker.models.SetPlayer;
 
 public class SetDao extends EntityDao<Set> implements ISetDao {
 
-    private IPlayerDao playerDao;
+    private final IPlayerDao playerDao;
+    private final ISetPlayerDao setPlayerDao;
 
     private static final String[] projectionAll = {
             SetEntry._ID,
             SetEntry.COLUMN_SCORE_WINNER,
             SetEntry.COLUMN_SCORE_LOSER,
-            SetEntry.COLUMN_WINNER,
-            SetEntry.COLUMN_LOSER
     };
 
     public SetDao(DbHelper dbHelper) {
         super(dbHelper);
         playerDao = dbHelper.getDao(IPlayerDao.class);
+        setPlayerDao = dbHelper.getDao(ISetPlayerDao.class);
+    }
+
+    @Override
+    protected Set getFromCursor(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry._ID));
+        int scoreWinner = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_WINNER));
+        int scoreLoser = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_LOSER));
+
+        List<SetPlayer> setPlayers = setPlayerDao.getSetPlayers(id);
+        List<Player> winners = new ArrayList<>();
+        List<Player> losers = new ArrayList<>();
+
+        for(SetPlayer setPlayer : setPlayers) {
+            Player player = playerDao.getById(setPlayer.getPlayerId());
+            if(setPlayer.isWinner()) {
+                winners.add(player);
+            }
+            else {
+                losers.add(player);
+            }
+        }
+
+        return new Set(id, scoreWinner, scoreLoser, winners, losers);
     }
 
     @Override
     public long add(long matchId, Set set) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreWinner());
-        values.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreLoser());
-        values.put(SetEntry.COLUMN_WINNER, set.getWinner().getId());
-        values.put(SetEntry.COLUMN_WINNER, set.getLoser().getId());
+        ContentValues setValues = new ContentValues();
+        setValues.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreWinner());
+        setValues.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreLoser());
 
-        return db.insert(SetEntry.TABLE_NAME, null, values);
+        long setId = db.insert(SetEntry.TABLE_NAME, null, setValues);
+
+        for(Player player : set.getWinners()) {
+            setPlayerDao.add(new SetPlayer(setId, player.getId(), true));
+        }
+
+        for(Player player : set.getLosers()) {
+            setPlayerDao.add(new SetPlayer(setId, player.getId(), false));
+        }
+
+        return setId;
     }
 
     @Override
@@ -86,43 +119,6 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
 
     @Override
     public Set getById(long id) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String selection = SetEntry._ID + " = ?";
-        String[] selectionArgs = { "" + id };
-
-        Cursor cursor = db.query(
-                SetEntry.TABLE_NAME,
-                projectionAll,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        if(cursor == null) {
-            return null;
-        }
-
-        if(!cursor.moveToNext()) {
-            return null;
-        }
-
-        return getFromCursor(cursor);
-    }
-
-    @Override
-    protected Set getFromCursor(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry._ID));
-        int scoreWinnner = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_WINNER));
-        int scoreLoser = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_LOSER));
-        long winnerId = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_WINNER));
-        long loserId = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_LOSER));
-
-        Player winner = playerDao.getById(winnerId);
-        Player loser = playerDao.getById(loserId);
-
-        return new Set(id, scoreWinnner, scoreLoser, winner, loser);
+        return null;
     }
 }
