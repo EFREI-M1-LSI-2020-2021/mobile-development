@@ -30,7 +30,7 @@ public class Match {
     public static class MatchEntry implements BaseColumns {
         public static final String TABLE_NAME = "matches";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_LOCATION = "locationId";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +

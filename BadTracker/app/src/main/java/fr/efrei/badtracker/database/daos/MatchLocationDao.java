@@ -34,7 +34,10 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
         values.put(MatchLocationEntry.COLUMN_LONGITUDE, matchLocation.getLongitude());
         values.put(MatchLocationEntry.COLUMN_STREET, matchLocation.getStreet());
 
-        return db.insert(MatchLocationEntry.TABLE_NAME, null, values);
+        long id = db.insert(MatchLocationEntry.TABLE_NAME, null, values);
+        matchLocation.setId(id);
+
+        return id;
     }
 
     @Override

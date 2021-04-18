@@ -19,7 +19,6 @@ import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.models.MatchPlayer;
 import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
-import fr.efrei.badtracker.models.SetPlayer;
 
 public class MatchDao extends EntityDao<Match> implements IMatchDao {
 

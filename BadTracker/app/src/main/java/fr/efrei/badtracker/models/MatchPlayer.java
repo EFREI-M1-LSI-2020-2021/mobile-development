@@ -18,8 +18,8 @@ public class MatchPlayer {
 
     public static class MatchPlayerEntry implements BaseColumns {
         public static final String TABLE_NAME = "match_players";
-        public static final String COLUMN_MATCH = "match";
-        public static final String COLUMN_PLAYER = "player";
+        public static final String COLUMN_MATCH = "matchId";
+        public static final String COLUMN_PLAYER = "playerId";
         public static final String COLUMN_WINNER = "winner";
 
         public static final String SQL_CREATE_ENTRIES =

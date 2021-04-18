@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.efrei.badtracker.database.daos.MatchDao;
 import fr.efrei.badtracker.database.daos.MatchLocationDao;
 import fr.efrei.badtracker.database.daos.MatchPlayerDao;
 import fr.efrei.badtracker.database.daos.PlayerDao;
@@ -38,16 +39,21 @@ public class DbHelper extends SQLiteOpenHelper {
     private final Map<Class<? extends IDao>, IDao> daos = new HashMap<>();
 
     private DbHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        // in memory database
+        super(context, null, null, DATABASE_VERSION);
+
+        // file database
+        //super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
         daos.put(IPlayerDao.class, new PlayerDao(this));
         daos.put(IMatchLocationDao.class, new MatchLocationDao(this));
-        daos.put(IMatchDao.class, new SetDao(this));
+        daos.put(ISetPlayerDao.class, new SetPlayerDao(this));
         daos.put(ISetDao.class, new SetDao(this));
         daos.put(IMatchPlayerDao.class, new MatchPlayerDao(this));
-        daos.put(ISetPlayerDao.class, new SetPlayerDao(this));
+        daos.put(IMatchDao.class, new MatchDao(this));
     }
 
-    public DbHelper getInstance(Context context) {
+    public static DbHelper getInstance(Context context) {
         if(dbHelper == null) {
             dbHelper = new DbHelper(context);
         }
@@ -66,7 +72,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(MatchPlayerEntry.SQL_CREATE_ENTRIES);
         db.execSQL(SetEntry.SQL_CREATE_ENTRIES);
         db.execSQL(SetPlayerEntry.SQL_CREATE_ENTRIES);
-        db.execSQL(MatchPlayerEntry.SQL_CREATE_ENTRIES);
     }
 
     @Override
@@ -77,7 +82,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(MatchPlayerEntry.SQL_DELETE_ENTRIES);
         db.execSQL(SetEntry.SQL_DELETE_ENTRIES);
         db.execSQL(SetPlayerEntry.SQL_DELETE_ENTRIES);
-        db.execSQL(MatchPlayerEntry.SQL_DELETE_ENTRIES);
         onCreate(db);
     }
 

@@ -18,8 +18,8 @@ public class SetPlayer {
 
     public static class SetPlayerEntry implements BaseColumns {
         public static final String TABLE_NAME = "set_players";
-        public static final String COLUMN_SET = "set";
-        public static final String COLUMN_PLAYER = "player";
+        public static final String COLUMN_SET = "setId";
+        public static final String COLUMN_PLAYER = "playerId";
         public static final String COLUMN_WINNER = "winner";
 
         public static final String SQL_CREATE_ENTRIES =

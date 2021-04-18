@@ -28,7 +28,7 @@ public class Set {
         public static final String TABLE_NAME = "sets";
         public static final String COLUMN_SCORE_WINNER = "scoreWinner";
         public static final String COLUMN_SCORE_LOSER = "scoreLoser";
-        public static final String COLUMN_MATCH = "match";
+        public static final String COLUMN_MATCH = "matchId";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -37,7 +37,7 @@ public class Set {
                         COLUMN_SCORE_LOSER + " INTEGER NOT NULL," +
                         COLUMN_MATCH + " INTEGER NOT NULL REFERENCES " +
                         MatchEntry.TABLE_NAME + "(" + MatchEntry._ID + ") " +
-                        "ON DELETE CASCADE," +
+                        "ON DELETE CASCADE" +
                         ")";
 
         public static final String SQL_DELETE_ENTRIES =

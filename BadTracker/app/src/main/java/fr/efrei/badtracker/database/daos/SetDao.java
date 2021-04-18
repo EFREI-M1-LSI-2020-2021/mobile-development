@@ -60,11 +60,13 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
     public long add(long matchId, Set set) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues setValues = new ContentValues();
-        setValues.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreWinner());
-        setValues.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreLoser());
+        ContentValues values = new ContentValues();
+        values.put(SetEntry.COLUMN_SCORE_WINNER, set.getScoreWinner());
+        values.put(SetEntry.COLUMN_SCORE_LOSER, set.getScoreLoser());
+        values.put(SetEntry.COLUMN_MATCH, matchId);
 
-        long setId = db.insert(SetEntry.TABLE_NAME, null, setValues);
+        long setId = db.insert(SetEntry.TABLE_NAME, null, values);
+        set.setId(setId);
 
         for(Player player : set.getWinners()) {
             setPlayerDao.add(new SetPlayer(setId, player.getId(), true));
