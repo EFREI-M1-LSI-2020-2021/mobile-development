@@ -93,14 +93,15 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
             return null;
         }
 
+        if(!cursor.moveToNext()) {
+            return null;
+        }
+
         return getFromCursor(cursor);
     }
 
     @Override
     protected Match getFromCursor(Cursor cursor) {
-        if(!cursor.moveToNext()) {
-            return null;
-        }
 
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NAME));

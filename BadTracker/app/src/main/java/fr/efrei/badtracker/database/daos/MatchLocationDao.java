@@ -64,14 +64,15 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
             return null;
         }
 
+        if(!cursor.moveToNext()) {
+            return null;
+        }
+
         return getFromCursor(cursor);
     }
 
     @Override
     protected MatchLocation getFromCursor(Cursor cursor) {
-        if(!cursor.moveToNext()) {
-            return null;
-        }
 
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchLocationEntry._ID));
         double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LATITUDE));

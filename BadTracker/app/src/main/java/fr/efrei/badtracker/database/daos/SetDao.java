@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.efrei.badtracker.database.DbHelper;
@@ -37,7 +38,40 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
 
     @Override
     public List<Set> getMatchSets(long matchId) {
-        return null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                SetEntry._ID,
+                SetEntry.COLUMN_SCORE_WINNER,
+                SetEntry.COLUMN_SCORE_LOSER,
+                SetEntry.COLUMN_WINNER,
+                SetEntry.COLUMN_LOSER
+        };
+
+        String selection = SetEntry.COLUMN_MATCH + " = ?";
+        String[] selectionArgs = { "" + matchId };
+
+        Cursor cursor = db.query(
+                SetEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if(cursor == null) {
+            return null;
+        }
+
+        List<Set> sets = new ArrayList<>();
+
+        while(cursor.moveToNext()) {
+            sets.add(getFromCursor(cursor));
+        }
+
+        return sets;
     }
 
     @Override
@@ -79,15 +113,15 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
             return null;
         }
 
+        if(!cursor.moveToNext()) {
+            return null;
+        }
+
         return getFromCursor(cursor);
     }
 
     @Override
     protected Set getFromCursor(Cursor cursor) {
-        if(!cursor.moveToNext()) {
-            return null;
-        }
-
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(SetEntry._ID));
         int scoreWinnner = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_WINNER));
         int scoreLoser = cursor.getInt(cursor.getColumnIndexOrThrow(SetEntry.COLUMN_SCORE_LOSER));

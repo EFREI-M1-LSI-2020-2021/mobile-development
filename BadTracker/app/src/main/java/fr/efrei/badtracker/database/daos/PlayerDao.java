@@ -69,15 +69,15 @@ public class PlayerDao extends EntityDao<Player> implements IPlayerDao {
             return null;
         }
 
+        if(!cursor.moveToNext()) {
+            return null;
+        }
+
         return getFromCursor(cursor);
     }
 
     @Override
     protected Player getFromCursor(Cursor cursor) {
-        if(!cursor.moveToNext()) {
-            return null;
-        }
-
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(PlayerEntry._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_NAME));
         String firstName = cursor.getString(cursor.getColumnIndexOrThrow(PlayerEntry.COLUMN_FIRST_NAME));
