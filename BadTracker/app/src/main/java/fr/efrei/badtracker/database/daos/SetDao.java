@@ -18,6 +18,14 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
 
     private IPlayerDao playerDao;
 
+    private static final String[] projectionAll = {
+            SetEntry._ID,
+            SetEntry.COLUMN_SCORE_WINNER,
+            SetEntry.COLUMN_SCORE_LOSER,
+            SetEntry.COLUMN_WINNER,
+            SetEntry.COLUMN_LOSER
+    };
+
     public SetDao(DbHelper dbHelper) {
         super(dbHelper);
         playerDao = dbHelper.getDao(IPlayerDao.class);
@@ -40,20 +48,12 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
     public List<Set> getMatchSets(long matchId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = {
-                SetEntry._ID,
-                SetEntry.COLUMN_SCORE_WINNER,
-                SetEntry.COLUMN_SCORE_LOSER,
-                SetEntry.COLUMN_WINNER,
-                SetEntry.COLUMN_LOSER
-        };
-
         String selection = SetEntry.COLUMN_MATCH + " = ?";
         String[] selectionArgs = { "" + matchId };
 
         Cursor cursor = db.query(
                 SetEntry.TABLE_NAME,
-                projection,
+                projectionAll,
                 selection,
                 selectionArgs,
                 null,
@@ -88,20 +88,12 @@ public class SetDao extends EntityDao<Set> implements ISetDao {
     public Set getById(long id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = {
-                SetEntry._ID,
-                SetEntry.COLUMN_SCORE_WINNER,
-                SetEntry.COLUMN_SCORE_LOSER,
-                SetEntry.COLUMN_WINNER,
-                SetEntry.COLUMN_LOSER
-        };
-
         String selection = SetEntry._ID + " = ?";
         String[] selectionArgs = { "" + id };
 
         Cursor cursor = db.query(
                 SetEntry.TABLE_NAME,
-                projection,
+                projectionAll,
                 selection,
                 selectionArgs,
                 null,
