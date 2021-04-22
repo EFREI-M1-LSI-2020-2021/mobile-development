@@ -91,7 +91,7 @@ public class MainFragment extends Fragment {
         IMatchDao matchDao = dbHelper.getDao(IMatchDao.class);
         matchDao.add(new Match(
                 "Test",
-                new MatchLocation(12, 12, "Street"),
+                new MatchLocation(12, 12),
                 new ArrayList<Player>() {{
                     add(new Player("REMEUR", "JM", Sex.Male, "FR"));
                 }},
