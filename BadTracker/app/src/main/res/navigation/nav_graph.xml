@@ -13,37 +13,26 @@
             android:id="@+id/action_mainFragment_to_matchFragment"
             app:destination="@id/matchFragment"
             app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_mainFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_mainFragment_to_createMatchFragment"
             app:destination="@id/createMatchFragment"
             app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/createMatchFragment"
         android:name="fr.efrei.badtracker.fragments.create_match.CreateMatchFragment"
         android:label="Create a match"
-        tools:layout="@layout/fragment_create_match" >
-        <action
-            android:id="@+id/action_createMatchFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/slide_in_bottom"
-            app:popExitAnim="@anim/slide_out_bottom" />
-    </fragment>
+        tools:layout="@layout/fragment_create_match" />
     <fragment
         android:id="@+id/matchFragment"
         android:name="fr.efrei.badtracker.fragments.match.MatchFragment"

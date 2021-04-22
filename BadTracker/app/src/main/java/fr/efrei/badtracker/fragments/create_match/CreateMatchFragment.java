@@ -2,11 +2,16 @@ package fr.efrei.badtracker.fragments.create_match;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,12 +33,12 @@ public class CreateMatchFragment extends Fragment {
     private Button nextButton;
     private Button backButton;
 
-    private List<Integer> nextFragments = new ArrayList<Integer>(){{
+    private final List<Integer> nextFragments = new ArrayList<Integer>(){{
         add(R.id.action_matchInfoFragment_to_matchPlayersFragment);
         add(R.id.action_matchPlayersFragment_to_matchSetsFragment);
     }};
 
-    private List<Integer> backFragments = new ArrayList<Integer>(){{
+    private final List<Integer> backFragments = new ArrayList<Integer>(){{
         add(R.id.action_matchPlayersFragment_to_matchInfoFragment);
         add(R.id.action_matchSetsFragment_to_matchPlayersFragment);
     }};
@@ -54,6 +59,10 @@ public class CreateMatchFragment extends Fragment {
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
+
         progressBar = view.findViewById(R.id.progressBar);
         nextButton = view.findViewById(R.id.next);
         backButton = view.findViewById(R.id.back);
@@ -68,7 +77,7 @@ public class CreateMatchFragment extends Fragment {
 
         if(done) {
             // save match
-            NavHostFragment.findNavController(this).navigate(R.id.action_createMatchFragment_to_mainFragment);
+            NavHostFragment.findNavController(this).popBackStack();
             return;
         }
 
