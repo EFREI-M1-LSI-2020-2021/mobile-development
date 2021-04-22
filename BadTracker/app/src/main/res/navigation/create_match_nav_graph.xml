@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_match_nav_graph"
+    app:startDestination="@id/matchInfoFragment">
+
+    <fragment
+        android:id="@+id/matchInfoFragment"
+        android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment"
+        android:label="fragment_match_info"
+        tools:layout="@layout/fragment_match_info" >
+        <action
+            android:id="@+id/action_matchInfoFragment_to_matchPlayersFragment"
+            app:destination="@id/matchPlayersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchPlayersFragment"
+        android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragment"
+        android:label="fragment_match_players"
+        tools:layout="@layout/fragment_match_players" >
+        <action
+            android:id="@+id/action_matchPlayersFragment_to_matchSetsFragment"
+            app:destination="@id/matchSetsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_matchPlayersFragment_to_matchInfoFragment"
+            app:destination="@id/matchInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/matchSetsFragment"
+        android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragment"
+        android:label="fragment_match_sets"
+        tools:layout="@layout/fragment_match_sets" >
+        <action
+            android:id="@+id/action_matchSetsFragment_to_matchPlayersFragment"
+            app:destination="@id/matchPlayersFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+</navigation>

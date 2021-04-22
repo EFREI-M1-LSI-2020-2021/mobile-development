@@ -3,18 +3,41 @@ package fr.efrei.badtracker.fragments.create_match;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.efrei.badtracker.R;
 
 public class CreateMatchFragment extends Fragment {
 
     private String matchType;
+    private int index = 0;
+    private final int max = 2;
+    private boolean done = false;
+
+    private NavController navController;
     private ProgressBar progressBar;
+    private Button nextButton;
+    private Button backButton;
+
+    private List<Integer> nextFragments = new ArrayList<Integer>(){{
+        add(R.id.action_matchInfoFragment_to_matchPlayersFragment);
+        add(R.id.action_matchPlayersFragment_to_matchSetsFragment);
+    }};
+
+    private List<Integer> backFragments = new ArrayList<Integer>(){{
+        add(R.id.action_matchPlayersFragment_to_matchInfoFragment);
+        add(R.id.action_matchSetsFragment_to_matchPlayersFragment);
+    }};
 
     public CreateMatchFragment() {
     }
@@ -30,8 +53,57 @@ public class CreateMatchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_match, container, false);
 
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+
         progressBar = view.findViewById(R.id.progressBar);
+        nextButton = view.findViewById(R.id.next);
+        backButton = view.findViewById(R.id.back);
+
+        nextButton.setOnClickListener(this::next);
+        backButton.setOnClickListener(this::back);
 
         return view;
+    }
+
+    public void next(View view) {
+
+        if(done) {
+            // save match
+            NavHostFragment.findNavController(this).navigate(R.id.action_createMatchFragment_to_mainFragment);
+            return;
+        }
+
+        index++;
+        backButton.setVisibility(View.VISIBLE);
+
+        if(index == max) {
+            done = true;
+            nextButton.setText(R.string.add);
+            progressBar.setProgress(100);
+        }
+        else {
+            progressBar.setProgress(progressBar.getProgress() + 33);
+        }
+
+        navController.navigate(nextFragments.get(index - 1));
+    }
+
+    public void back(View view) {
+        index--;
+        if(index == 0) {
+            backButton.setVisibility(View.GONE);
+        }
+
+        if(done) {
+            nextButton.setText(R.string.next);
+            done = false;
+            progressBar.setProgress(99 - 33);
+        }
+        else {
+            progressBar.setProgress(progressBar.getProgress() - 33);
+        }
+
+        navController.navigate(backFragments.get(index));
     }
 }

@@ -35,6 +35,9 @@
         <argument
             android:name="matchType"
             app:argType="string" />
+        <action
+            android:id="@+id/action_createMatchFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"
