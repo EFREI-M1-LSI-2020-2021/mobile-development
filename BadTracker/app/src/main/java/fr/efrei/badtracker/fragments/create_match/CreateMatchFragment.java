@@ -19,7 +19,6 @@ import fr.efrei.badtracker.R;
 
 public class CreateMatchFragment extends Fragment {
 
-    private String matchType;
     private int index = 0;
     private final int max = 2;
     private boolean done = false;
@@ -45,7 +44,6 @@ public class CreateMatchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        matchType = CreateMatchFragmentArgs.fromBundle(getArguments()).getMatchType();
     }
 
     @Override

@@ -23,7 +23,6 @@ import fr.efrei.badtracker.fragments.main.adapters.PageAdapter;
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
-import fr.efrei.badtracker.dialogs.MatchTypeDialog;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.models.Player;
@@ -110,7 +109,7 @@ public class MainFragment extends Fragment {
 
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> Navigation.findNavController(view)
-                .navigate(R.id.action_mainFragment_to_matchTypeDialog));
+                .navigate(R.id.action_mainFragment_to_createMatchFragment));
 
         return view;
     }

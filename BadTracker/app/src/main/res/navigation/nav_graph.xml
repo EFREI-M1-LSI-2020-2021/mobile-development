@@ -10,31 +10,20 @@
         android:label="BadTracker"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_matchTypeDialog"
-            app:destination="@id/matchTypeDialog" />
-        <action
             android:id="@+id/action_mainFragment_to_matchFragment"
             app:destination="@id/matchFragment" />
         <action
             android:id="@+id/action_mainFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/matchTypeDialog"
-        android:name="fr.efrei.badtracker.dialogs.MatchTypeDialog"
-        android:label="MatchTypeDialog" >
         <action
-            android:id="@+id/action_matchTypeDialog_to_createMatchFragment"
+            android:id="@+id/action_mainFragment_to_createMatchFragment"
             app:destination="@id/createMatchFragment" />
-    </dialog>
+    </fragment>
     <fragment
         android:id="@+id/createMatchFragment"
         android:name="fr.efrei.badtracker.fragments.create_match.CreateMatchFragment"
         android:label="Create a match"
         tools:layout="@layout/fragment_create_match" >
-        <argument
-            android:name="matchType"
-            app:argType="string" />
         <action
             android:id="@+id/action_createMatchFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
