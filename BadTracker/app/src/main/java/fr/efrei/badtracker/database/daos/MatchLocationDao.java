@@ -20,9 +20,8 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(MatchLocationEntry._ID));
         double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_LONGITUDE));
-        String street = cursor.getString(cursor.getColumnIndexOrThrow(MatchLocationEntry.COLUMN_STREET));
 
-        return new MatchLocation(id, latitude, longitude, street);
+        return new MatchLocation(id, latitude, longitude);
     }
 
     @Override
@@ -32,7 +31,6 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
         ContentValues values = new ContentValues();
         values.put(MatchLocationEntry.COLUMN_LATITUDE, matchLocation.getLatitude());
         values.put(MatchLocationEntry.COLUMN_LONGITUDE, matchLocation.getLongitude());
-        values.put(MatchLocationEntry.COLUMN_STREET, matchLocation.getStreet());
 
         long id = db.insert(MatchLocationEntry.TABLE_NAME, null, values);
         matchLocation.setId(id);
@@ -58,7 +56,6 @@ public class MatchLocationDao extends EntityDao<MatchLocation> implements IMatch
                 MatchLocationEntry._ID,
                 MatchLocationEntry.COLUMN_LATITUDE,
                 MatchLocationEntry.COLUMN_LONGITUDE,
-                MatchLocationEntry.COLUMN_STREET
         };
 
         String selection = MatchLocationEntry._ID + " = ?";
