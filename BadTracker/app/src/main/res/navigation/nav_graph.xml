@@ -11,13 +11,25 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_matchFragment"
-            app:destination="@id/matchFragment" />
+            app:destination="@id/matchFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_mainFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_mainFragment_to_createMatchFragment"
-            app:destination="@id/createMatchFragment" />
+            app:destination="@id/createMatchFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/createMatchFragment"
@@ -26,7 +38,11 @@
         tools:layout="@layout/fragment_create_match" >
         <action
             android:id="@+id/action_createMatchFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"
