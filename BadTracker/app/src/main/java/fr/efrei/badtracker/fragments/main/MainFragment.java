@@ -1,33 +1,25 @@
 package fr.efrei.badtracker.fragments.main;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import fr.efrei.badtracker.fragments.main.adapters.PageAdapter;
+import fr.efrei.badtracker.services.ApiService;
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.database.DbHelper;
-import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
-import fr.efrei.badtracker.models.Match;
-import fr.efrei.badtracker.models.MatchLocation;
-import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Set;
-import fr.efrei.badtracker.models.Sex;
+import fr.efrei.badtracker.api.MatchApi;
+import fr.efrei.badtracker.api.dtos.MatchDto;
+import fr.efrei.badtracker.fragments.main.adapters.PageAdapter;
+import retrofit2.Response;
 
 public class MainFragment extends Fragment {
 
@@ -106,6 +98,15 @@ public class MainFragment extends Fragment {
 
         List<Match> matches = matchDao.getAll();
         System.out.println(matches);*/
+
+        ApiService apiService = ApiService.getInstance();
+        MatchApi matchApi = apiService.getMatchApi();
+
+        Response<List<MatchDto>> response = apiService.execute(matchApi.getMatches());
+        if(response.isSuccessful()) {
+            List<MatchDto> matches = response.body();
+            System.out.println(matches);
+        }
 
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> Navigation.findNavController(view)
