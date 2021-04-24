@@ -1,5 +1,8 @@
 package fr.efrei.badtracker.api.dtos;
 
+import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.models.Sex;
+
 public class PlayerDto {
     private final String name;
     private final String firstName;
@@ -11,5 +14,9 @@ public class PlayerDto {
         this.firstName = firstName;
         this.sex = sex;
         this.nationality = nationality;
+    }
+
+    public Player toPlayer() {
+        return new Player(name, firstName, Sex.valueOf(sex), nationality);
     }
 }

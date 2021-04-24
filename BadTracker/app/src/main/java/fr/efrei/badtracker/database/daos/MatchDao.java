@@ -83,15 +83,23 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         match.setId(matchId);
 
         for(Player player : match.getTeam1()) {
-            long playerId = playerDao.add(player);
+            long playerId = player.getId();
+            if(playerId == -1) {
+                playerId = playerDao.add(player);
+                player.setId(playerId);
+            }
+
             matchPlayerDao.add(new MatchPlayer(matchId, playerId, true));
-            player.setId(playerId);
         }
 
         for(Player player : match.getTeam2()) {
-            long playerId = playerDao.add(player);
-            matchPlayerDao.add(new MatchPlayer(matchId, playerId, false));
-            player.setId(playerId);
+            long playerId = player.getId();
+            if(playerId == -1) {
+                playerId = playerDao.add(player);
+                player.setId(playerId);
+            }
+
+            matchPlayerDao.add(new MatchPlayer(matchId, playerId, true));
         }
 
         for(Set set : match.getSets()) {

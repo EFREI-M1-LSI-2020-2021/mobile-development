@@ -15,6 +15,7 @@ public class Player {
     }
 
     public Player(String name, String firstName, Sex sex, String nationality) {
+        this.id = -1;
         this.name = name;
         this.firstName = firstName;
         this.sex = sex;

@@ -99,15 +99,6 @@ public class MainFragment extends Fragment {
         List<Match> matches = matchDao.getAll();
         System.out.println(matches);*/
 
-        ApiService apiService = ApiService.getInstance();
-        MatchApi matchApi = apiService.getMatchApi();
-
-        Response<List<MatchDto>> response = apiService.execute(matchApi.getMatches());
-        if(response.isSuccessful()) {
-            List<MatchDto> matches = response.body();
-            System.out.println(matches);
-        }
-
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> Navigation.findNavController(view)
                 .navigate(R.id.action_mainFragment_to_createMatchFragment));
