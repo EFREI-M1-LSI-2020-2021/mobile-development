@@ -22,11 +22,11 @@ public interface MatchApi {
     @PATCH("matches/{id}/sets")
     Call<String> addSet(@Path("id") int id, @Body SetDto setDto);
 
-    @PATCH("matches/{id}/winners")
-    Call<String> addWinners(@Path("id") int id, @Body List<PlayerDto> winners);
+    @PATCH("matches/{id}/team1")
+    Call<String> addTeam1(@Path("id") int id, @Body List<PlayerDto> team1);
 
-    @PATCH("matches/{id}/losers")
-    Call<String> addLosers(@Path("id") int id, @Body List<PlayerDto> losers);
+    @PATCH("matches/{id}/team2")
+    Call<String> addTeam2(@Path("id") int id, @Body List<PlayerDto> team2);
 
     @GET("matches")
     Call<List<MatchDto>> getMatches();
