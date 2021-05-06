@@ -9,7 +9,7 @@
         android:id="@+id/matchInfoFragment"
         android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment"
         android:label="fragment_match_info"
-        tools:layout="@layout/fragment_match_info" >
+        tools:layout="@layout/fragment_create_match_info" >
         <action
             android:id="@+id/action_matchInfoFragment_to_matchPlayersFragment"
             app:destination="@id/matchPlayersFragment"
@@ -22,7 +22,7 @@
         android:id="@+id/matchPlayersFragment"
         android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragment"
         android:label="fragment_match_players"
-        tools:layout="@layout/fragment_match_players" >
+        tools:layout="@layout/fragment_create_match_players" >
         <action
             android:id="@+id/action_matchPlayersFragment_to_matchSetsFragment"
             app:destination="@id/matchSetsFragment"
@@ -42,7 +42,7 @@
         android:id="@+id/matchSetsFragment"
         android:name="fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragment"
         android:label="fragment_match_sets"
-        tools:layout="@layout/fragment_match_sets" >
+        tools:layout="@layout/fragment_create_match_sets" >
         <action
             android:id="@+id/action_matchSetsFragment_to_matchPlayersFragment"
             app:destination="@id/matchPlayersFragment"
