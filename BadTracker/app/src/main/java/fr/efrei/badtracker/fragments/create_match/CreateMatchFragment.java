@@ -13,15 +13,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.util.List;
+
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragmentDirections;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPhotoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPhotoFragmentDirections;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragmentDirections;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDirections;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
+import fr.efrei.badtracker.models.Player;
 
 public class CreateMatchFragment extends Fragment {
 
@@ -69,13 +74,14 @@ public class CreateMatchFragment extends Fragment {
 
     public void next(View view) {
 
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+
         if(done) {
+            MatchSetsFragment matchSetsFragment = (MatchSetsFragment) fragment;
             // save match
             NavHostFragment.findNavController(this).popBackStack();
             return;
         }
-
-        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
         NavDirections direction = null;
 
         switch (index) {
@@ -96,6 +102,10 @@ public class CreateMatchFragment extends Fragment {
                 direction = MatchPhotoFragmentDirections.MatchPhotoToPlayers();
                 break;
             case 2:
+                MatchPlayersFragment matchPlayersFragment = (MatchPlayersFragment) fragment;
+                if(!matchPlayersFragment.validate()) {
+                    return;
+                }
                 direction = MatchPlayersFragmentDirections.MatchPlayersToSets();
                 break;
         }
@@ -156,5 +166,10 @@ public class CreateMatchFragment extends Fragment {
 
     public void setImage(String image) {
         match.setImage(image);
+    }
+
+    public void setTeams(List<Player> team1, List<Player> team2) {
+        match.setTeam1(team1);
+        match.setTeam2(team2);
     }
 }

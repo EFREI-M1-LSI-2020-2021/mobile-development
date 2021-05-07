@@ -72,6 +72,16 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
+        <argument
+            android:name="team1"
+            app:argType="fr.efrei.badtracker.models.Team"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="team2"
+            app:argType="fr.efrei.badtracker.models.Team"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/matchSetsFragment"

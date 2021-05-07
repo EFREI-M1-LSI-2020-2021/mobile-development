@@ -2,7 +2,9 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private long id;
     private String name;
     private String firstName;
