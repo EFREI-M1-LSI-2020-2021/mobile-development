@@ -1,5 +1,6 @@
 package fr.efrei.badtracker.fragments.main.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.models.Set;
 
 public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -47,6 +49,13 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         team1.setText(getTeamName(match.getTeam1()));
         team2.setText(getTeamName(match.getTeam2()));
 
+        if(isteam1Winner()) {
+            team1.setTypeface(team1.getTypeface(), Typeface.BOLD);
+        }
+        else {
+            team2.setTypeface(team2.getTypeface(), Typeface.BOLD);
+        }
+
         open.setOnClickListener(this::openMatch);
 
         return view;
@@ -64,6 +73,17 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         }
 
         return stringBuilder.toString();
+    }
+
+    private boolean isteam1Winner() {
+        int team1Sets = 0;
+        for(Set set : match.getSets()) {
+            if(set.getScoreTeam1() > set.getScoreTeam2()) {
+                team1Sets++;
+            }
+        }
+
+        return team1Sets == 2;
     }
 
     private void openMatch(View view) {
