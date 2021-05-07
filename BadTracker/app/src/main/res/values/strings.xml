@@ -16,4 +16,6 @@
     <string name="name">Name</string>
     <string name="required_location_permission">Location permission is required</string>
     <string name="permission_denied_explanation">Permission was denied but is required to display your location</string>
+    <string name="take_picture">Take picture</string>
+    <string name="create_image_file">Failed to create image file</string>
 </resources>

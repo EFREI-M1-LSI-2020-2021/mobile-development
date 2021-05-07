@@ -13,11 +13,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragmentDirections;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchPhotoFragment;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchPhotoFragmentDirections;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragmentDirections;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDirections;
 import fr.efrei.badtracker.models.Match;
@@ -26,7 +26,7 @@ import fr.efrei.badtracker.models.MatchLocation;
 public class CreateMatchFragment extends Fragment {
 
     private int index = 0;
-    private final int max = 2;
+    private final int max = 3;
     private boolean done = false;
 
     private NavHostFragment navHostFragment;
@@ -36,16 +36,6 @@ public class CreateMatchFragment extends Fragment {
     private Button backButton;
 
     private Match match = new Match();
-
-    private final List<Integer> nextFragments = new ArrayList<Integer>(){{
-        add(R.id.MatchInfoToPlayers);
-        add(R.id.MatchPlayersToSets);
-    }};
-
-    private final List<Integer> backFragments = new ArrayList<Integer>(){{
-        add(R.id.MatchPlayersToInfo);
-        add(R.id.MatchSetsToPlayers);
-    }};
 
     public CreateMatchFragment() {
     }
@@ -86,6 +76,7 @@ public class CreateMatchFragment extends Fragment {
         }
 
         Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        NavDirections direction = null;
 
         switch (index) {
             case 0:
@@ -93,10 +84,19 @@ public class CreateMatchFragment extends Fragment {
                 if(!matchInfoFragment.validate()) {
                     return;
                 }
+                MatchInfoFragmentDirections.MatchInfoToPhoto infoToPhoto = MatchInfoFragmentDirections.MatchInfoToPhoto();
+                infoToPhoto.setPhoto(match.getImage());
+                direction = infoToPhoto;
                 break;
             case 1:
+                MatchPhotoFragment matchPhotoFragment = (MatchPhotoFragment) fragment;
+                if(!matchPhotoFragment.validate()) {
+                    return;
+                }
+                direction = MatchPhotoFragmentDirections.MatchPhotoToPlayers();
                 break;
             case 2:
+                direction = MatchPlayersFragmentDirections.MatchPlayersToSets();
                 break;
         }
 
@@ -106,13 +106,10 @@ public class CreateMatchFragment extends Fragment {
         if(index == max) {
             done = true;
             nextButton.setText(R.string.add);
-            progressBar.setProgress(100);
         }
-        else {
-            progressBar.setProgress(progressBar.getProgress() + 33);
-        }
+        progressBar.setProgress(progressBar.getProgress() + 25);
 
-        navController.navigate(nextFragments.get(index - 1));
+        navController.navigate(direction);
     }
 
     public void back(View view) {
@@ -124,23 +121,24 @@ public class CreateMatchFragment extends Fragment {
         if(done) {
             nextButton.setText(R.string.next);
             done = false;
-            progressBar.setProgress(99 - 33);
         }
-        else {
-            progressBar.setProgress(progressBar.getProgress() - 33);
-        }
+        progressBar.setProgress(progressBar.getProgress() - 25);
 
         NavDirections direction = null;
 
         switch (index) {
             case 0:
-                MatchPlayersFragmentDirections.MatchPlayersToInfo args = MatchPlayersFragmentDirections
-                        .MatchPlayersToInfo();
-                args.setName(match.getName());
-                args.setLocation(match.getLocation());
-                direction = args;
+                MatchPhotoFragmentDirections.MatchPhotoToInfo photoToInfo = MatchPhotoFragmentDirections.MatchPhotoToInfo();
+                photoToInfo.setName(match.getName());
+                photoToInfo.setLocation(match.getLocation());
+                direction = photoToInfo;
                 break;
             case 1:
+                MatchPlayersFragmentDirections.MatchPlayersToPhoto playersToPhoto = MatchPlayersFragmentDirections.MatchPlayersToPhoto();
+                playersToPhoto.setPhoto(match.getImage());
+                direction = playersToPhoto;
+                break;
+            case 2:
                 direction = MatchSetsFragmentDirections.MatchSetsToPlayers();
                 break;
         }
@@ -154,5 +152,9 @@ public class CreateMatchFragment extends Fragment {
 
     public void setMatchLocation(MatchLocation matchLocation) {
         match.setLocation(matchLocation);
+    }
+
+    public void setImage(String image) {
+        match.setImage(image);
     }
 }

@@ -39,6 +39,6 @@ public class MatchDto {
             sets.add(setDto.toSet());
         }
 
-        return new Match(name, location.toMatchLocation(), team1, team2, sets);
+        return new Match(name, location.toMatchLocation(), null, team1, team2, sets);
     }
 }

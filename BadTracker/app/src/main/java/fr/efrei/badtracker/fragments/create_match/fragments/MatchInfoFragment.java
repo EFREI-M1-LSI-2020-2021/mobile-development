@@ -29,19 +29,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.Utils;
 import fr.efrei.badtracker.fragments.create_match.CreateMatchFragment;
 import fr.efrei.badtracker.models.MatchLocation;
 
 public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+
     private MapView mapView;
     private EditText editText;
     private GoogleMap map;
@@ -133,24 +134,17 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (shouldProvideRationale) {
-            showSnackbar(R.string.required_location_permission, android.R.string.ok,
-                    view -> ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            REQUEST_PERMISSIONS_REQUEST_CODE));
-
+            Utils.showSnackbar(view, R.string.required_location_permission, android.R.string.ok,
+                    view -> requestLocation());
         } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+            requestLocation();
         }
     }
 
-    private void showSnackbar(final int mainTextStringId, final int actionStringId,
-                              View.OnClickListener listener) {
-        Snackbar.make(view.findViewById(android.R.id.content),
-                getString(mainTextStringId),
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(actionStringId), listener).show();
+    private void requestLocation() {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
     }
 
     @Override
@@ -162,7 +156,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 findLastLocation();
             } else {
-                showSnackbar(R.string.permission_denied_explanation, R.string.settings,
+                Utils.showSnackbar(view, R.string.permission_denied_explanation, R.string.settings,
                         view -> {
                             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                             Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
