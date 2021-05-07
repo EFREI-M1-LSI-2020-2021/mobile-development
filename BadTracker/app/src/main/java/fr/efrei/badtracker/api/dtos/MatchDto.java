@@ -1,6 +1,7 @@
 package fr.efrei.badtracker.api.dtos;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.models.Match;
@@ -10,13 +11,16 @@ import fr.efrei.badtracker.models.Set;
 public class MatchDto {
     private String name;
     private LocationDto location;
+    private int date;
     private List<PlayerDto> team1;
     private List<PlayerDto> team2;
     private List<SetDto> sets;
 
-    public MatchDto(String name, LocationDto location, List<PlayerDto> team1, List<PlayerDto> team2, List<SetDto> sets) {
+    public MatchDto(String name, LocationDto location, int date,
+                    List<PlayerDto> team1, List<PlayerDto> team2, List<SetDto> sets) {
         this.name = name;
         this.location = location;
+        this.date = date;
         this.team1 = team1;
         this.team2 = team2;
         this.sets = sets;
@@ -39,6 +43,6 @@ public class MatchDto {
             sets.add(setDto.toSet());
         }
 
-        return new Match(name, location.toMatchLocation(), null, team1, team2, sets);
+        return new Match(name, location.toMatchLocation(), null, new Date(date), team1, team2, sets);
     }
 }

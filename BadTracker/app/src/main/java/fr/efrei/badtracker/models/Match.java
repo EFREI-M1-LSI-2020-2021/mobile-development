@@ -2,6 +2,8 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class Match {
@@ -9,23 +11,25 @@ public class Match {
     private String name;
     private MatchLocation location;
     private String image;
+    private Date date;
     private List<Player> team1;
     private List<Player> team2;
     private List<Set> sets;
 
     public Match() {}
 
-    public Match(long id, String name, MatchLocation location, String image, List<Player> team1,
-                 List<Player> team2, List<Set> sets) {
-        this(name, location, image, team1, team2, sets);
+    public Match(long id, String name, MatchLocation location, String image, Date date,
+                 List<Player> team1, List<Player> team2, List<Set> sets) {
+        this(name, location, image, date, team1, team2, sets);
         this.id = id;
     }
 
-    public Match(String name, MatchLocation location, String image, List<Player> team1, List<Player> team2,
-                 List<Set> sets) {
+    public Match(String name, MatchLocation location, String image, Date date,
+                 List<Player> team1, List<Player> team2, List<Set> sets) {
         this.name = name;
         this.location = location;
         this.image = image;
+        this.date = date;
         this.team1 = team1;
         this.team2 = team2;
         this.sets = sets;
@@ -36,13 +40,15 @@ public class Match {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_LOCATION = "locationId";
         public static final String COLUMN_IMAGE = "image";
+        public static final String COLUMN_DATE = "date";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
                         COLUMN_NAME + " TEXT," +
                         COLUMN_LOCATION + " INTEGER" +
-                        COLUMN_IMAGE + " TEXT);";
+                        COLUMN_IMAGE + " TEXT)" +
+                        COLUMN_DATE + " INTEGER);";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -62,6 +68,10 @@ public class Match {
 
     public String getImage() {
         return image;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public List<Player> getTeam1() {
@@ -90,6 +100,10 @@ public class Match {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void Date(Date date) {
+        this.date = date;
     }
 
     public void setTeam1(List<Player> team1) {
