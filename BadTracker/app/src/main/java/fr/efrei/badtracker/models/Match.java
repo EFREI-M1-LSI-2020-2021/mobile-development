@@ -12,6 +12,8 @@ public class Match {
     private List<Player> team2;
     private List<Set> sets;
 
+    public Match() {}
+
     public Match(long id, String name, MatchLocation location, List<Player> team1,
                  List<Player> team2, List<Set> sets) {
         this(name, location, team1, team2, sets);

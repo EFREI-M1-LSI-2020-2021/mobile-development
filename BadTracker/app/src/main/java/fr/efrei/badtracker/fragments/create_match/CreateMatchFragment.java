@@ -1,26 +1,28 @@
 package fr.efrei.badtracker.fragments.create_match;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragmentDirections;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDirections;
+import fr.efrei.badtracker.models.Match;
+import fr.efrei.badtracker.models.MatchLocation;
+import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.models.Set;
 
 public class CreateMatchFragment extends Fragment {
 
@@ -33,14 +35,16 @@ public class CreateMatchFragment extends Fragment {
     private Button nextButton;
     private Button backButton;
 
+    private Match match = new Match();
+
     private final List<Integer> nextFragments = new ArrayList<Integer>(){{
-        add(R.id.action_matchInfoFragment_to_matchPlayersFragment);
-        add(R.id.action_matchPlayersFragment_to_matchSetsFragment);
+        add(R.id.MatchInfoToPlayers);
+        add(R.id.MatchPlayersToSets);
     }};
 
     private final List<Integer> backFragments = new ArrayList<Integer>(){{
-        add(R.id.action_matchPlayersFragment_to_matchInfoFragment);
-        add(R.id.action_matchSetsFragment_to_matchPlayersFragment);
+        add(R.id.MatchPlayersToInfo);
+        add(R.id.MatchSetsToPlayers);
     }};
 
     public CreateMatchFragment() {
@@ -111,6 +115,29 @@ public class CreateMatchFragment extends Fragment {
             progressBar.setProgress(progressBar.getProgress() - 33);
         }
 
-        navController.navigate(backFragments.get(index));
+        NavDirections direction = null;
+
+        switch (index) {
+            case 0:
+                MatchPlayersFragmentDirections.MatchPlayersToInfo args = MatchPlayersFragmentDirections
+                        .MatchPlayersToInfo();
+                args.setName(match.getName());
+                args.setLocation(match.getLocation());
+                direction = args;
+                break;
+            case 1:
+                direction = MatchSetsFragmentDirections.MatchSetsToPlayers();
+                break;
+        }
+
+        navController.navigate(direction);
+    }
+
+    public void setMatchName(String name) {
+        match.setName(name);
+    }
+
+    public void setMatchLocation(MatchLocation matchLocation) {
+        match.setLocation(matchLocation);
     }
 }

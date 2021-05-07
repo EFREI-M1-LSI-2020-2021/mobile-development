@@ -9,20 +9,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,27 +36,46 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.fragments.create_match.CreateMatchFragment;
+import fr.efrei.badtracker.models.MatchLocation;
 
-public class MatchInfoFragment extends Fragment implements OnMapReadyCallback {
+public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView mapView;
+    private EditText editText;
     private GoogleMap map;
     private Geocoder geocoder;
     private FusedLocationProviderClient fusedLocationClient;
-    private Location lastLocation;
-    private Marker lastMarker;
+    private LatLng location;
+    private Marker marker;
     private View view;
+    private CreateMatchFragment createMatchFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_match_info, container, false);
 
+        NavHostFragment navHostFragment = (NavHostFragment) getParentFragment();
+        createMatchFragment = (CreateMatchFragment) navHostFragment.getParentFragment();
+
+        MatchInfoFragmentArgs args = MatchInfoFragmentArgs.fromBundle(getArguments());
+
+        editText = view.findViewById(R.id.edit_text_match_name);
+
+        String name = args.getName();
+        if(name != null) {
+            editText.setText(name);
+        }
+
+        MatchLocation location = args.getLocation();
+        if(location != null) {
+            this.location = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+
         mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        mapView.onResume();
-
         mapView.getMapAsync(this);
 
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -71,23 +88,37 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setOnMapLongClickListener(this);
+        if(!checkPermissions()) {
+            requestPermissions();
+        }
+        else {
+            if(location == null) {
+                findLastLocation();
+            }
+            else {
+                updateCurrentLocation(false);
+            }
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!checkPermissions()) {
-            requestPermissions();
-        }
-        else {
-            registerLocationUpdates();
-        }
+        mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterLocationUpdates();
+        mapView.onPause();
+        save();
+    }
+
+    @Override
+    public void onMapLongClick(@NonNull LatLng latLng) {
+        location = latLng;
+        updateCurrentLocation(true);
     }
 
     private boolean checkPermissions() {
@@ -129,7 +160,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback {
             if (grantResults.length <= 0) {
                 //canceled
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                registerLocationUpdates();
+                findLastLocation();
             } else {
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                         view -> {
@@ -143,47 +174,22 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @SuppressLint("MissingPermission")
-    private void registerLocationUpdates() {
-
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(500);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setNumUpdates(1);
-
-        fusedLocationClient.requestLocationUpdates(locationRequest,
-                locationCallback,
-                Looper.getMainLooper());
-
+    private void findLastLocation() {
+        fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
+            Location lastLocation = task.getResult();
+            this.location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            updateCurrentLocation(false);
+        });
     }
 
-    private final LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            if (locationResult == null) {
-                return;
-            }
-            lastLocation = locationResult.getLastLocation();
-            System.out.println(lastLocation);
-            updateCurrentLocation();
-        }
-    };
+    private void updateCurrentLocation(boolean defaultZoom) {
+        if(map != null && geocoder != null && location != null) {
 
-
-    private void unregisterLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
-
-    private void updateCurrentLocation() {
-        if(map != null && geocoder != null) {
-
-            LatLng latLng = new LatLng(lastLocation.getLatitude(),
-                    lastLocation.getLongitude());
             String title = "Unknown";
 
             try {
-                List<Address> addressList = geocoder.getFromLocation(lastLocation.getLatitude(),
-                                lastLocation.getLongitude(), 1);
+                List<Address> addressList = geocoder.getFromLocation(location.latitude,
+                                location.longitude, 1);
                 if(addressList.size() > 0) {
                     title = addressList.get(0).getAddressLine(0);
                 }
@@ -192,17 +198,31 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
 
-            if(lastMarker != null) {
-                lastMarker.remove();
+            if(marker != null) {
+                marker.remove();
             }
 
-            lastMarker = map.addMarker(new MarkerOptions()
+            marker = map.addMarker(new MarkerOptions()
                     .title(title)
-                    .position(latLng)
+                    .position(location)
                     .visible(true));
-            lastMarker.showInfoWindow();
+            marker.showInfoWindow();
 
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, map.getCameraPosition().zoom));
+            float zoom = defaultZoom ? map.getCameraPosition().zoom : 16;
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoom));
+        }
+    }
+
+    private void save() {
+
+        String text = editText.getText().toString();
+        if(!text.isEmpty()) {
+            createMatchFragment.setMatchName(text);
+        }
+
+        if(location != null) {
+            createMatchFragment.setMatchLocation(new MatchLocation(location.latitude,
+                    location.longitude));
         }
     }
 }

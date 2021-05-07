@@ -1,8 +1,11 @@
 package fr.efrei.badtracker.models;
 
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
-public class MatchLocation {
+import java.io.Serializable;
+
+public class MatchLocation implements Serializable {
     private long id;
     private double latitude;
     private double longitude;

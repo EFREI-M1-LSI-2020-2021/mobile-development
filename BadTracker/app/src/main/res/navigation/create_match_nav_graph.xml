@@ -11,12 +11,22 @@
         android:label="fragment_match_info"
         tools:layout="@layout/fragment_create_match_info" >
         <action
-            android:id="@+id/action_matchInfoFragment_to_matchPlayersFragment"
+            android:id="@+id/MatchInfoToPlayers"
             app:destination="@id/matchPlayersFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="location"
+            app:argType="fr.efrei.badtracker.models.MatchLocation"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/matchPlayersFragment"
@@ -24,14 +34,14 @@
         android:label="fragment_match_players"
         tools:layout="@layout/fragment_create_match_players" >
         <action
-            android:id="@+id/action_matchPlayersFragment_to_matchSetsFragment"
+            android:id="@+id/MatchPlayersToSets"
             app:destination="@id/matchSetsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
         <action
-            android:id="@+id/action_matchPlayersFragment_to_matchInfoFragment"
+            android:id="@+id/MatchPlayersToInfo"
             app:destination="@id/matchInfoFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
@@ -44,7 +54,7 @@
         android:label="fragment_match_sets"
         tools:layout="@layout/fragment_create_match_sets" >
         <action
-            android:id="@+id/action_matchSetsFragment_to_matchPlayersFragment"
+            android:id="@+id/MatchSetsToPlayers"
             app:destination="@id/matchPlayersFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
