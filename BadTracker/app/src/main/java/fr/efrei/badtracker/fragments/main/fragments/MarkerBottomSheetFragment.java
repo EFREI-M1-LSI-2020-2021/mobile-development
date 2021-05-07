@@ -63,7 +63,7 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
             }
         }
 
-        return "";
+        return stringBuilder.toString();
     }
 
     private void openMatch(View view) {
