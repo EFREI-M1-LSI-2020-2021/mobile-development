@@ -213,6 +213,11 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
         }
     }
 
+    public boolean validate() {
+        String text = editText.getText().toString();
+        return !text.isEmpty() && location != null;
+    }
+
     private void save() {
 
         String text = editText.getText().toString();

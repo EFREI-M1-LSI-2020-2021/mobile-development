@@ -17,12 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPlayersFragmentDirections;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDirections;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
-import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Set;
 
 public class CreateMatchFragment extends Fragment {
 
@@ -30,6 +29,7 @@ public class CreateMatchFragment extends Fragment {
     private final int max = 2;
     private boolean done = false;
 
+    private NavHostFragment navHostFragment;
     private NavController navController;
     private ProgressBar progressBar;
     private Button nextButton;
@@ -60,7 +60,7 @@ public class CreateMatchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_match, container, false);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -83,6 +83,21 @@ public class CreateMatchFragment extends Fragment {
             // save match
             NavHostFragment.findNavController(this).popBackStack();
             return;
+        }
+
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+
+        switch (index) {
+            case 0:
+                MatchInfoFragment matchInfoFragment = (MatchInfoFragment) fragment;
+                if(!matchInfoFragment.validate()) {
+                    return;
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
         }
 
         index++;
