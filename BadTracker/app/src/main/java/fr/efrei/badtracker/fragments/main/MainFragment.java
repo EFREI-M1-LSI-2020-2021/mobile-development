@@ -78,27 +78,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        /*DbHelper dbHelper = DbHelper.getInstance(getContext());
-
-        IMatchDao matchDao = dbHelper.getDao(IMatchDao.class);
-        matchDao.add(new Match(
-                "Test",
-                new MatchLocation(12, 12),
-                new ArrayList<Player>() {{
-                    add(new Player("REMEUR", "JM", Sex.Male, "FR"));
-                }},
-                new ArrayList<Player>() {{
-                    add(new Player("LACAZE", "Thomas", Sex.Male, "FR"));
-                }},
-                new ArrayList<Set>() {{
-                    add(new Set(21, 2));
-                    add(new Set(21, 1));
-                }}
-        ));
-
-        List<Match> matches = matchDao.getAll();
-        System.out.println(matches);*/
-
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> Navigation.findNavController(view)
                 .navigate(R.id.action_mainFragment_to_createMatchFragment));

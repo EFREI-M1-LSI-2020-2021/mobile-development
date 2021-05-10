@@ -47,10 +47,10 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
 
 
         name.setText(match.getName() + " " + match.getDate());
-        team1.setText(getTeamName(match.getTeam1()));
-        team2.setText(getTeamName(match.getTeam2()));
+        team1.setText(match.getTeamName(match.getTeam1()));
+        team2.setText(match.getTeamName(match.getTeam2()));
 
-        if(isteam1Winner()) {
+        if(match.isteam1Winner(match)) {
             team1.setTypeface(team1.getTypeface(), Typeface.BOLD);
         }
         else {
@@ -60,31 +60,6 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         open.setOnClickListener(this::openMatch);
 
         return view;
-    }
-
-    private String getTeamName(List<Player> players) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for(int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            stringBuilder.append(player.getName()).append(" ").append(player.getFirstName());
-            if(i + 1 < players.size()) {
-                stringBuilder.append(" - ");
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private boolean isteam1Winner() {
-        int team1Sets = 0;
-        for(Set set : match.getSets()) {
-            if(set.getScoreTeam1() > set.getScoreTeam2()) {
-                team1Sets++;
-            }
-        }
-
-        return team1Sets == 2;
     }
 
     private void openMatch(View view) {

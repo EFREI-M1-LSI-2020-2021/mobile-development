@@ -118,4 +118,29 @@ public class Match {
     public void setSets(List<Set> sets) {
         this.sets = sets;
     }
+
+    public String getTeamName(List<Player> players) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            stringBuilder.append(player.getName()).append(" ").append(player.getFirstName());
+            if(i + 1 < players.size()) {
+                stringBuilder.append(" - ");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public boolean isteam1Winner(Match match) {
+        int team1Sets = 0;
+        for(Set set : match.getSets()) {
+            if(set.getScoreTeam1() > set.getScoreTeam2()) {
+                team1Sets++;
+            }
+        }
+
+        return team1Sets == 2;
+    }
 }
