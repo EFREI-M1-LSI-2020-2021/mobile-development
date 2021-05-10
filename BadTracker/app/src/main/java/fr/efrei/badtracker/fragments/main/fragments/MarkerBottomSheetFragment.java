@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.api.dtos.MatchDto;
@@ -43,12 +45,15 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         TextView name = view.findViewById(R.id.name);
         TextView team1 = view.findViewById(R.id.team1);
         TextView team2 = view.findViewById(R.id.team2);
+        TextView date = view.findViewById(R.id.date);
         Button open = view.findViewById(R.id.open);
 
 
-        name.setText(match.getName() + " " + match.getDate());
+        name.setText(match.getName());
         team1.setText(match.getTeamName(match.getTeam1()));
         team2.setText(match.getTeamName(match.getTeam2()));
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        date.setText(df.format(match.getDate()));
 
         if(match.isteam1Winner(match)) {
             team1.setTypeface(team1.getTypeface(), Typeface.BOLD);

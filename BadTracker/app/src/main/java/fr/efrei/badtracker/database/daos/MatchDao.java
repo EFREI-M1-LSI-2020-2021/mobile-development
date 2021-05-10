@@ -54,7 +54,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         String name = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_NAME));
         long locationId = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_LOCATION));
         String image = cursor.getString(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_IMAGE));
-        int date = cursor.getInt(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DATE));
+        long date = cursor.getLong(cursor.getColumnIndexOrThrow(MatchEntry.COLUMN_DATE));
 
         MatchLocation location = matchLocationDao.getById(locationId);
 
@@ -87,6 +87,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         values.put(MatchEntry.COLUMN_NAME, match.getName());
         values.put(MatchEntry.COLUMN_LOCATION, matchLocationId);
         values.put(MatchEntry.COLUMN_IMAGE, match.getName());
+        values.put(MatchEntry.COLUMN_DATE, match.getDate().getTime());
 
         long matchId = db.insert(MatchEntry.TABLE_NAME, null, values);
         match.setId(matchId);

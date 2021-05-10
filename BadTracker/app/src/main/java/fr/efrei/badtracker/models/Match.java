@@ -49,7 +49,7 @@ public class Match {
                         COLUMN_NAME + " TEXT," +
                         COLUMN_LOCATION + " INTEGER" +
                         COLUMN_IMAGE + " TEXT)" +
-                        COLUMN_DATE + " TEXT);";
+                        COLUMN_DATE + " UNSIGNED BIG INT);";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -103,7 +103,7 @@ public class Match {
         this.image = image;
     }
 
-    public void date(Timestamp date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

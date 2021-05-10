@@ -30,7 +30,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchViewHolder>
     public MatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.match, parent, false);
+        View view = inflater.inflate(R.layout.match_item, parent, false);
         return new MatchViewHolder(view);
     }
 
