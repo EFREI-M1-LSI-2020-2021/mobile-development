@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.database.DbHelper;
-import fr.efrei.badtracker.database.daos.interfaces.IDate;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchLocationDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchPlayerDao;
