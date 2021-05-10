@@ -12,14 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
-import fr.efrei.badtracker.services.ApiService;
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.api.MatchApi;
-import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.fragments.main.adapters.PageAdapter;
-import retrofit2.Response;
 
 public class MainFragment extends Fragment {
 
@@ -80,7 +74,7 @@ public class MainFragment extends Fragment {
 
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(v -> Navigation.findNavController(view)
-                .navigate(R.id.action_mainFragment_to_createMatchFragment));
+                .navigate(R.id.MainToCreateMatch));
 
         return view;
     }

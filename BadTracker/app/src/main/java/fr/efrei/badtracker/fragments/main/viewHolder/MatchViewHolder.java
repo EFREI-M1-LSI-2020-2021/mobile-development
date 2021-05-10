@@ -1,16 +1,19 @@
 package fr.efrei.badtracker.fragments.main.viewHolder;
 
-import android.app.AlertDialog;
-import android.view.Gravity;
+import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.util.Locale;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.fragments.main.MainFragmentDirections;
 import fr.efrei.badtracker.models.Match;
 
 public class MatchViewHolder extends RecyclerView.ViewHolder
@@ -21,8 +24,7 @@ public class MatchViewHolder extends RecyclerView.ViewHolder
     private final DateFormat df;
     private Match match;
 
-    public MatchViewHolder(final View itemView)
-    {
+    public MatchViewHolder(Fragment fragment, final View itemView) {
         super(itemView);
 
         name = itemView.findViewById(R.id.name);
@@ -32,17 +34,12 @@ public class MatchViewHolder extends RecyclerView.ViewHolder
         df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 
         itemView.setOnClickListener(view -> {
-
-            // TODO: Get address name from long lat
-            new AlertDialog.Builder(itemView.getContext())
-                    .setTitle("Match")
-                    .setMessage(match.getName())
-                    .show();
+            NavDirections navDirections = MainFragmentDirections.MainToMatch(match);
+            NavHostFragment.findNavController(fragment).navigate(navDirections);
         });
     }
 
-    public void show(Match match)
-    {
+    public void show(Match match) {
         this.match = match;
 
         name.setText(match.getName());

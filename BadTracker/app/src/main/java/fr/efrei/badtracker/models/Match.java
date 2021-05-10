@@ -2,12 +2,13 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-public class Match {
+public class Match implements Serializable {
     private long id;
     private String name;
     private MatchLocation location;

@@ -3,43 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/Main">
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/Main"
         android:name="fr.efrei.badtracker.fragments.main.MainFragment"
         android:label="BadTracker"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_matchFragment"
-            app:destination="@id/matchFragment"
+            android:id="@+id/MainToMatch"
+            app:destination="@id/Match"
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
-            android:id="@+id/action_mainFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
+            android:id="@+id/MainToSettings"
+            app:destination="@id/Settings"
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
-            android:id="@+id/action_mainFragment_to_createMatchFragment"
-            app:destination="@id/createMatchFragment"
+            android:id="@+id/MainToCreateMatch"
+            app:destination="@id/CreateMatch"
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
-        android:id="@+id/createMatchFragment"
+        android:id="@+id/CreateMatch"
         android:name="fr.efrei.badtracker.fragments.create_match.CreateMatchFragment"
         android:label="Create a match"
         tools:layout="@layout/fragment_create_match" />
     <fragment
-        android:id="@+id/matchFragment"
+        android:id="@+id/Match"
         android:name="fr.efrei.badtracker.fragments.match.MatchFragment"
         android:label="Match"
-        tools:layout="@layout/fragment_match" />
+        tools:layout="@layout/fragment_match" >
+        <argument
+            android:name="match"
+            app:argType="fr.efrei.badtracker.models.Match" />
+    </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/Settings"
         android:name="fr.efrei.badtracker.fragments.settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />

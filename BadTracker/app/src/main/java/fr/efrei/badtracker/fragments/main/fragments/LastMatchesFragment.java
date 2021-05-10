@@ -47,7 +47,6 @@ public class LastMatchesFragment extends Fragment {
         apiService = ApiService.getInstance();
         matchApi = apiService.getMatchApi();
 
-
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             matches.clear();
@@ -57,7 +56,7 @@ public class LastMatchesFragment extends Fragment {
         });
 
         matches = getMatches();
-        adapter = new MatchAdapter(matches);
+        adapter = new MatchAdapter(getParentFragment(), matches);
         recyclerView.setAdapter(adapter);
 
         return view;

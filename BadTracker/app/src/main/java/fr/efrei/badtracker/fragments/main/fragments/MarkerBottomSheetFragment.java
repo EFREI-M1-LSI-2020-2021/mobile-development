@@ -3,7 +3,7 @@ package fr.efrei.badtracker.fragments.main.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -15,14 +15,11 @@ import android.widget.TextView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.DateFormat;
-import java.util.List;
 import java.util.Locale;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.api.dtos.MatchDto;
+import fr.efrei.badtracker.fragments.main.MainFragmentDirections;
 import fr.efrei.badtracker.models.Match;
-import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Set;
 
 public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -69,6 +66,7 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void openMatch(View view) {
         this.dismiss();
-        NavHostFragment.findNavController(this).navigate(R.id.action_mainFragment_to_matchFragment);
+        NavDirections navDirections = MainFragmentDirections.MainToMatch(match);
+        NavHostFragment.findNavController(this).navigate(navDirections);
     }
 }
