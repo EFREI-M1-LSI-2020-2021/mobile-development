@@ -45,7 +45,8 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         TextView team2 = view.findViewById(R.id.team2);
         Button open = view.findViewById(R.id.open);
 
-        name.setText(match.getName());
+
+        name.setText(match.getName() + " " + match.getDate());
         team1.setText(getTeamName(match.getTeam1()));
         team2.setText(getTeamName(match.getTeam2()));
 

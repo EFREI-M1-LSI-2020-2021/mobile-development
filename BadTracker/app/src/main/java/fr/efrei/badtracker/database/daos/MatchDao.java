@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.database.DbHelper;
+import fr.efrei.badtracker.database.daos.interfaces.IDate;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchLocationDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchPlayerDao;
@@ -73,7 +75,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
 
         List<Set> sets = setDao.getMatchSets(id);
 
-        return new Match(id, name, location, image, new Date(date), team1, team2, sets);
+        return new Match(id, name, location, image, new Timestamp(date), team1, team2, sets);
     }
 
     @Override

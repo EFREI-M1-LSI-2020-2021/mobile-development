@@ -2,6 +2,7 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -11,20 +12,20 @@ public class Match {
     private String name;
     private MatchLocation location;
     private String image;
-    private Date date;
+    private Timestamp date;
     private List<Player> team1;
     private List<Player> team2;
     private List<Set> sets;
 
     public Match() {}
 
-    public Match(long id, String name, MatchLocation location, String image, Date date,
+    public Match(long id, String name, MatchLocation location, String image, Timestamp date,
                  List<Player> team1, List<Player> team2, List<Set> sets) {
         this(name, location, image, date, team1, team2, sets);
         this.id = id;
     }
 
-    public Match(String name, MatchLocation location, String image, Date date,
+    public Match(String name, MatchLocation location, String image, Timestamp date,
                  List<Player> team1, List<Player> team2, List<Set> sets) {
         this.name = name;
         this.location = location;
@@ -48,7 +49,7 @@ public class Match {
                         COLUMN_NAME + " TEXT," +
                         COLUMN_LOCATION + " INTEGER" +
                         COLUMN_IMAGE + " TEXT)" +
-                        COLUMN_DATE + " INTEGER);";
+                        COLUMN_DATE + " TEXT);";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -102,7 +103,7 @@ public class Match {
         this.image = image;
     }
 
-    public void Date(Date date) {
+    public void date(Timestamp date) {
         this.date = date;
     }
 
