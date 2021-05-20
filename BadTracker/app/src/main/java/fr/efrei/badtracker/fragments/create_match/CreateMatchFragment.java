@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -51,6 +54,13 @@ public class CreateMatchFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("index", index);
+        outState.putSerializable("match", match);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_match, container, false);
@@ -65,6 +75,21 @@ public class CreateMatchFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         nextButton = view.findViewById(R.id.next);
         backButton = view.findViewById(R.id.back);
+
+        if(savedInstanceState != null) {
+            index = savedInstanceState.getInt("index", 0);
+            done = index == max;
+
+            if(index > 0) {
+                backButton.setVisibility(View.VISIBLE);
+                progressBar.setProgress((index + 1) * 25);
+            }
+
+            Object obj = savedInstanceState.getSerializable("match");
+            if(obj != null) {
+                match = (Match) obj;
+            }
+        }
 
         nextButton.setOnClickListener(this::next);
         backButton.setOnClickListener(this::back);

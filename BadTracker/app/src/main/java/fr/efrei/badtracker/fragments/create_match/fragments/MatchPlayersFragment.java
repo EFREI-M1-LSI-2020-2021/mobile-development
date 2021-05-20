@@ -27,6 +27,8 @@ public class MatchPlayersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_match_players, container, false);
 
+        setRetainInstance(true);
+
         NavHostFragment navHostFragment = (NavHostFragment) getParentFragment();
         createMatchFragment = (CreateMatchFragment) navHostFragment.getParentFragment();
 

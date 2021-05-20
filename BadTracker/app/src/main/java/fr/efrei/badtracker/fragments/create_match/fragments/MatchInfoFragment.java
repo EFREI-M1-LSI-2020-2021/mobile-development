@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,10 @@ import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,9 +58,11 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
     private MapView mapView;
     private EditText editText;
     private FloatingActionButton lastLocationButton;
+    private LocationRequest locationRequest;
     private GoogleMap map;
     private Geocoder geocoder;
     private FusedLocationProviderClient fusedLocationClient;
+    private Location lastLocation;
     private LatLng location;
     private Marker marker;
     private View view;
@@ -63,6 +72,8 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_match_info, container, false);
+
+        setRetainInstance(true);
 
         NavHostFragment navHostFragment = (NavHostFragment) getParentFragment();
         createMatchFragment = (CreateMatchFragment) navHostFragment.getParentFragment();
@@ -88,8 +99,17 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+
         lastLocationButton = view.findViewById(R.id.last_location);
-        lastLocationButton.setOnClickListener(v -> findLastLocation());
+        lastLocationButton.setOnClickListener(v -> {
+            this.location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            updateCurrentLocation(false);
+        });
 
         return view;
     }
@@ -103,10 +123,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
             requestPermissions();
         }
         else {
-            if(location == null) {
-                findLastLocation();
-            }
-            else {
+            if(location != null) {
                 updateCurrentLocation(false);
             }
         }
@@ -116,13 +133,14 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
     public void onResume() {
         super.onResume();
         mapView.onResume();
-
+        startLocationUpdates();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        stopLocationUpdates();
         save();
     }
 
@@ -164,7 +182,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
             if (grantResults.length <= 0) {
                 //canceled
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                findLastLocation();
+                startLocationUpdates();
             } else {
                 Utils.showSnackbar(view, R.string.permission_denied_explanation, R.string.settings,
                         view -> {
@@ -177,16 +195,24 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void findLastLocation() {
-        Log.d("Debug", "here");
-        fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
-            Location lastLocation = task.getResult();
-            if(lastLocation != null) {
-                this.location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+    private final LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(@NonNull @NotNull LocationResult locationResult) {
+            lastLocation = locationResult.getLastLocation();
+            if(location == null) {
+                location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                 updateCurrentLocation(false);
             }
-        });
+        }
+    };
+
+    @SuppressLint("MissingPermission")
+    private void startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
     private void updateCurrentLocation(boolean defaultZoom) {

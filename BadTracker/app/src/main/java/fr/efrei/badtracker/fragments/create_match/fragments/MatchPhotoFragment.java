@@ -46,6 +46,8 @@ public class MatchPhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_match_photo, container, false);
 
+        setRetainInstance(true);
+
         NavHostFragment navHostFragment = (NavHostFragment) getParentFragment();
         createMatchFragment = (CreateMatchFragment) navHostFragment.getParentFragment();
 
@@ -123,6 +125,8 @@ public class MatchPhotoFragment extends Fragment {
     }
 
     private void save() {
-        createMatchFragment.setImage(photoFile.getAbsolutePath());
+        if(photoFile != null) {
+            createMatchFragment.setImage(photoFile.getAbsolutePath());
+        }
     }
 }

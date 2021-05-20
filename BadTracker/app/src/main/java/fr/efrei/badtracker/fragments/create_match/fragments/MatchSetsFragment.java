@@ -23,6 +23,8 @@ public class MatchSetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_match_sets, container, false);
+        View view =  inflater.inflate(R.layout.fragment_create_match_sets, container, false);
+        setRetainInstance(true);
+        return view;
     }
 }
