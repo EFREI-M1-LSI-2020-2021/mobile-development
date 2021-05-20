@@ -31,10 +31,10 @@ public class ApiTask<T> extends AsyncTask<Call<T>, Void, Response<T>> {
 
     @Override
     protected void onPostExecute(Response<T> response) {
-
+        listener.onResponse(response);
     }
 
     public interface Listener<T> {
-        void onResult(Response<T> result);
+        void onResponse(Response<T> result);
     }
 }

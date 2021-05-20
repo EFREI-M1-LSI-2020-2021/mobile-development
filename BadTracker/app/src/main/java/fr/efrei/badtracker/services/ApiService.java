@@ -1,11 +1,8 @@
 package fr.efrei.badtracker.services;
 
-import java.util.concurrent.ExecutionException;
-
-import fr.efrei.badtracker.api.MatchApi;
 import fr.efrei.badtracker.api.ApiTask;
+import fr.efrei.badtracker.api.MatchApi;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

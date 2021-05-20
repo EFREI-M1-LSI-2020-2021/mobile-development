@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.api.ApiTask;
 import fr.efrei.badtracker.api.MatchApi;
 import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.fragments.main.adapters.MatchAdapter;
@@ -31,50 +32,24 @@ public class LastMatchesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private ApiService apiService;
-    private MatchApi matchApi;
-    private List<Match> matches = new ArrayList<>();
+    private List<Match> matchs = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_last_matches, container, false);
 
+        adapter = new MatchAdapter(getParentFragment(), matchs);
+
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        apiService = ApiService.getInstance();
-        matchApi = apiService.getMatchApi();
-
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            matches.clear();
-            matches.addAll(getMatches());
-            swipeRefreshLayout.setRefreshing(false);
-            adapter.notifyDataSetChanged();
-        });
-
-        matches = getMatches();
-        adapter = new MatchAdapter(getParentFragment(), matches);
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
+    private void setupMatches(){
 
-    private List<Match> getMatches(){
-        List<Match> returnMatches = new ArrayList<>();
-
-        Response<List<MatchDto>> response = apiService.execute(matchApi.getMatches());
-        if(response.isSuccessful()) {
-            List<MatchDto> matches = response.body();
-            for(MatchDto matchDto : matches) {
-                Match match = matchDto.toMatch();
-                returnMatches.add(match);
-            }
-        }
-
-        return returnMatches;
     }
 }

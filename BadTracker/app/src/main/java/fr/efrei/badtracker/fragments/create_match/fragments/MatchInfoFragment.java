@@ -10,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +50,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
 
     private MapView mapView;
     private EditText editText;
+    private FloatingActionButton lastLocationButton;
     private GoogleMap map;
     private Geocoder geocoder;
     private FusedLocationProviderClient fusedLocationClient;
@@ -75,12 +81,15 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
             this.location = new LatLng(location.getLatitude(), location.getLongitude());
         }
 
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
         mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        lastLocationButton = view.findViewById(R.id.last_location);
+        lastLocationButton.setOnClickListener(v -> findLastLocation());
 
         return view;
     }
@@ -107,6 +116,7 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
     public void onResume() {
         super.onResume();
         mapView.onResume();
+
     }
 
     @Override
@@ -169,10 +179,13 @@ public class MatchInfoFragment extends Fragment implements OnMapReadyCallback, G
 
     @SuppressLint("MissingPermission")
     private void findLastLocation() {
+        Log.d("Debug", "here");
         fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
             Location lastLocation = task.getResult();
-            this.location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            updateCurrentLocation(false);
+            if(lastLocation != null) {
+                this.location = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                updateCurrentLocation(false);
+            }
         });
     }
 
