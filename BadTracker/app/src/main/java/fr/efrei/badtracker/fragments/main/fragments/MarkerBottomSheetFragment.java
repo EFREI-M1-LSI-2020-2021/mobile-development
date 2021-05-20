@@ -3,7 +3,7 @@ package fr.efrei.badtracker.fragments.main.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -14,13 +14,12 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.util.Locale;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.api.dtos.MatchDto;
+import fr.efrei.badtracker.fragments.main.MainFragmentDirections;
 import fr.efrei.badtracker.models.Match;
-import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Set;
 
 public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -43,14 +42,17 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         TextView name = view.findViewById(R.id.name);
         TextView team1 = view.findViewById(R.id.team1);
         TextView team2 = view.findViewById(R.id.team2);
+        TextView date = view.findViewById(R.id.date);
         Button open = view.findViewById(R.id.open);
 
 
-        name.setText(match.getName() + " " + match.getDate());
-        team1.setText(getTeamName(match.getTeam1()));
-        team2.setText(getTeamName(match.getTeam2()));
+        name.setText(match.getName());
+        team1.setText(match.getTeamName(match.getTeam1()));
+        team2.setText(match.getTeamName(match.getTeam2()));
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        date.setText(df.format(match.getDate()));
 
-        if(isteam1Winner()) {
+        if(match.isteam1Winner(match)) {
             team1.setTypeface(team1.getTypeface(), Typeface.BOLD);
         }
         else {
@@ -62,33 +64,9 @@ public class MarkerBottomSheetFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    private String getTeamName(List<Player> players) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for(int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            stringBuilder.append(player.getName()).append(" ").append(player.getFirstName());
-            if(i + 1 < players.size()) {
-                stringBuilder.append(" - ");
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private boolean isteam1Winner() {
-        int team1Sets = 0;
-        for(Set set : match.getSets()) {
-            if(set.getScoreTeam1() > set.getScoreTeam2()) {
-                team1Sets++;
-            }
-        }
-
-        return team1Sets == 2;
-    }
-
     private void openMatch(View view) {
         this.dismiss();
-        NavHostFragment.findNavController(this).navigate(R.id.action_mainFragment_to_matchFragment);
+        NavDirections navDirections = MainFragmentDirections.MainToMatch(match);
+        NavHostFragment.findNavController(this).navigate(navDirections);
     }
 }
