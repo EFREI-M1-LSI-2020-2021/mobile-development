@@ -31,18 +31,9 @@ public class ApiService {
         return apiService;
     }
 
-    public <T> Response<T> execute(Call<T> call) {
-        ApiTask<T> task = new ApiTask<>();
+    public <T> void execute(Call<T> call, ApiTask.Listener<T> listener) {
+        ApiTask<T> task = new ApiTask<>(listener);
         task.execute(call);
-        try {
-            return task.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public MatchApi getMatchApi() {

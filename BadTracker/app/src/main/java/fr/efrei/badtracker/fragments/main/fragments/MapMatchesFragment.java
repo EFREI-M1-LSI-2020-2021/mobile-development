@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.api.ApiTask;
 import fr.efrei.badtracker.api.MatchApi;
 import fr.efrei.badtracker.api.dtos.LocationDto;
 import fr.efrei.badtracker.api.dtos.MatchDto;
@@ -70,19 +71,20 @@ public class MapMatchesFragment extends Fragment implements OnMapReadyCallback, 
         map.setOnMarkerClickListener(this);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-        Response<List<MatchDto>> response = apiService.execute(matchApi.getMatches());
-        if(response.isSuccessful()) {
-            List<MatchDto> matches = response.body();
-            for(MatchDto matchDto : matches) {
-                Match match = matchDto.toMatch();
-                MatchLocation location = match.getLocation();
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_baseline_sports_tennis_24));
-                Marker marker = map.addMarker(markerOptions);
-                markers.put(marker.getId(), match);
+        apiService.execute(matchApi.getMatches(), response -> {
+            if(response.isSuccessful()) {
+                List<MatchDto> matches = response.body();
+                for(MatchDto matchDto : matches) {
+                    Match match = matchDto.toMatch();
+                    MatchLocation location = match.getLocation();
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_baseline_sports_tennis_24));
+                    Marker marker = map.addMarker(markerOptions);
+                    markers.put(marker.getId(), match);
+                }
             }
-        }
+        });
     }
 
     @Override
