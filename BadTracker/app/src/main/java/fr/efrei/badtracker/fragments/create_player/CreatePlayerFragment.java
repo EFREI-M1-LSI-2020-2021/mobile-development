@@ -25,6 +25,7 @@ public class CreatePlayerFragment extends Fragment {
     private RadioGroup sexRadioGroup;
     private EditText nationalityEditText;
     private Button createButton;
+    private Bundle args;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,8 @@ public class CreatePlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_player, container, false);
         setRetainInstance(true);
+
+        args = getArguments();
 
         nameEditText = view.findViewById(R.id.name);
         firstNameEditText = view.findViewById(R.id.firstname);
@@ -82,6 +85,8 @@ public class CreatePlayerFragment extends Fragment {
 
         NavController navController = NavHostFragment.findNavController(this);
         navController.getPreviousBackStackEntry().getSavedStateHandle().set("player", player);
+        navController.getPreviousBackStackEntry().getSavedStateHandle().set("index", args.getInt("index"));
+        navController.getPreviousBackStackEntry().getSavedStateHandle().set("match", args.getSerializable("match"));
         navController.popBackStack();
     }
 }

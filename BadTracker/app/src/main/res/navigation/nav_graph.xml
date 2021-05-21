@@ -34,8 +34,17 @@
         android:label="Create a match"
         tools:layout="@layout/fragment_create_match" >
         <action
-            android:id="@+id/action_CreateMatch_to_createPlayerFragment"
-            app:destination="@id/CreatePlayer" />
+            android:id="@+id/CreateMatchToCreatePlayer"
+            app:destination="@id/CreatePlayer"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:popExitAnim="@anim/slide_out_bottom" />
+        <action
+            android:id="@+id/CreateMatchToCreateSet"
+            app:destination="@id/CreateSet"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/Match"
@@ -56,4 +65,9 @@
         android:name="fr.efrei.badtracker.fragments.create_player.CreatePlayerFragment"
         android:label="Create a player"
         tools:layout="@layout/fragment_create_player" />
+    <fragment
+        android:id="@+id/CreateSet"
+        android:name="fr.efrei.badtracker.fragments.create_set.CreateSetFragment"
+        android:label="Create a set"
+        tools:layout="@layout/fragment_create_set" />
 </navigation>

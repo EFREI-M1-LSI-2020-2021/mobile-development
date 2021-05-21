@@ -2,10 +2,11 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import java.io.Serializable;
 import java.util.List;
 import fr.efrei.badtracker.models.Match.MatchEntry;
 
-public class Set {
+public class Set implements Serializable {
     private long id;
     private int scoreTeam1;
     private int scoreTeam2;

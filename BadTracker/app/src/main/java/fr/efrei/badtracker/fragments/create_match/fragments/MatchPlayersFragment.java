@@ -18,7 +18,6 @@ import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.fragments.create_match.CreateMatchFragment;
 import fr.efrei.badtracker.fragments.create_match.adapters.PlayerAdapter;
 import fr.efrei.badtracker.models.Player;
-import fr.efrei.badtracker.models.Sex;
 import fr.efrei.badtracker.models.Team;
 
 public class MatchPlayersFragment extends Fragment {
@@ -66,12 +65,14 @@ public class MatchPlayersFragment extends Fragment {
 
         addPlayerTeam1Button.setOnClickListener(v -> {
             addInTeam1 = true;
-            NavHostFragment.findNavController(createMatchFragment).navigate(R.id.action_CreateMatch_to_createPlayerFragment);
+            NavHostFragment.findNavController(createMatchFragment)
+                    .navigate(R.id.CreateMatchToCreatePlayer, createMatchFragment.getState());
         });
 
         addPlayerTeam2Button.setOnClickListener(v -> {
             addInTeam2 = true;
-            NavHostFragment.findNavController(createMatchFragment).navigate(R.id.action_CreateMatch_to_createPlayerFragment);
+            NavHostFragment.findNavController(createMatchFragment)
+                    .navigate(R.id.CreateMatchToCreatePlayer, createMatchFragment.getState());
         });
 
         team1PlayersRecyclerView = view.findViewById(R.id.team1Players);

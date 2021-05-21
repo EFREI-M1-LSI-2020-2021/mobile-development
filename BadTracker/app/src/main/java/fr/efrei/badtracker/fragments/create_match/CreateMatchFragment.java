@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,6 +31,7 @@ import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDir
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.models.Set;
 import fr.efrei.badtracker.models.Sets;
 import fr.efrei.badtracker.models.Team;
 
@@ -47,14 +49,6 @@ public class CreateMatchFragment extends Fragment {
 
     private Match match = new Match();
 
-    public CreateMatchFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -70,8 +64,6 @@ public class CreateMatchFragment extends Fragment {
         navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        setRetainInstance(true);
-
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setNavigationOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
@@ -82,12 +74,7 @@ public class CreateMatchFragment extends Fragment {
 
         if(savedInstanceState != null) {
             index = savedInstanceState.getInt("index", 0);
-            done = index == max;
-
-            if(index > 0) {
-                backButton.setVisibility(View.VISIBLE);
-                progressBar.setProgress((index + 1) * 25);
-            }
+            updateState(index);
 
             Object obj = savedInstanceState.getSerializable("match");
             if(obj != null) {
@@ -98,10 +85,38 @@ public class CreateMatchFragment extends Fragment {
             }
         }
 
+        MutableLiveData<Integer> indexData = NavHostFragment.findNavController(this).getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("index");
+        indexData.observe(getViewLifecycleOwner(), index -> {
+            updateState(index);
+        });
+
+        MutableLiveData<Match> matchData = NavHostFragment.findNavController(this).getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("Match");
+        matchData.observe(getViewLifecycleOwner(), match -> {
+            this.match = match;
+        });
+
         nextButton.setOnClickListener(this::next);
         backButton.setOnClickListener(this::back);
 
         return view;
+    }
+
+    private void updateState(int index) {
+        this.index = index;
+        done = index == max;
+
+        if(index > 0) {
+            backButton.setVisibility(View.VISIBLE);
+            progressBar.setProgress((index + 1) * 25);
+        }
+        if(index == max) {
+            done = true;
+            nextButton.setText(R.string.add);
+        }
     }
 
     public void next(View view) {
@@ -110,6 +125,9 @@ public class CreateMatchFragment extends Fragment {
 
         if(done) {
             MatchSetsFragment matchSetsFragment = (MatchSetsFragment) fragment;
+            if(!matchSetsFragment.validate()) {
+                return;
+            }
             // save match
             NavHostFragment.findNavController(this).popBackStack();
             return;
@@ -219,5 +237,16 @@ public class CreateMatchFragment extends Fragment {
     public void setTeams(List<Player> team1, List<Player> team2) {
         match.setTeam1(team1);
         match.setTeam2(team2);
+    }
+
+    public void setSets(List<Set> sets) {
+        match.setSets(sets);
+    }
+
+    public Bundle getState() {
+        Bundle outState = new Bundle();
+        outState.putInt("index", index);
+        outState.putSerializable("match", match);
+        return outState;
     }
 }

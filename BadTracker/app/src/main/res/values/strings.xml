@@ -28,4 +28,7 @@
     <string name="nationality">Nationality</string>
     <string name="create">Create</string>
     <string name="firstname">Firstname</string>
+    <string name="score_team_2">Score team 2</string>
+    <string name="score_team_1">Score team 1</string>
+    <string name="create_set">Create set</string>
 </resources>
