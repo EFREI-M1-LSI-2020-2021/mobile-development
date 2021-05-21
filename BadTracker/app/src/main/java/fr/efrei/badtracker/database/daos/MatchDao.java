@@ -86,21 +86,6 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
     public long add(Match match) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        List<Match> checkMatches = this.getAll();
-
-        if(checkMatches.size() >= 5){
-            match = checkMatches.get(0);
-            this.delete(match);
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Date.class, (JsonSerializer<Date>) (date, type, jsonSerializationContext) -> new JsonPrimitive(date.getTime()))
-                    .create();
-
-
-            gson.toJson(match);
-
-            //Push to API
-        }
-
         long matchLocationId = matchLocationDao.add(match.getLocation());
 
         ContentValues values = new ContentValues();
@@ -203,5 +188,23 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         }
 
         return getFromCursor(cursor);
+    }
+
+    @Override
+    public Match safeAdd(Match match){
+
+        this.add(match);
+        List<Match> checkMatches = this.getAll();
+
+        if(checkMatches.size() >= 5){
+            Match deleteMatch = checkMatches.get(0);
+            this.delete(deleteMatch);
+
+            return deleteMatch;
+        }
+
+
+
+        return null;
     }
 }

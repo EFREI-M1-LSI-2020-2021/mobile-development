@@ -16,6 +16,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -29,6 +32,9 @@ import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.api.MatchApi;
+import fr.efrei.badtracker.api.dtos.CreateMatchDto;
+import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.database.daos.MatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
@@ -46,6 +52,7 @@ import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
 import fr.efrei.badtracker.models.Sets;
 import fr.efrei.badtracker.models.Team;
+import fr.efrei.badtracker.services.ApiService;
 
 public class CreateMatchFragment extends Fragment {
     private NavHostFragment navHostFragment;
@@ -53,6 +60,8 @@ public class CreateMatchFragment extends Fragment {
     private ProgressBar progressBar;
     private Button nextButton;
     private Button backButton;
+    private ApiService apiService;
+    private MatchApi matchApi;
 
     private int index = 0;
     private final int max = 3;
@@ -78,6 +87,8 @@ public class CreateMatchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_match, container, false);
 
+        apiService = ApiService.getInstance();
+        matchApi = apiService.getMatchApi();
         navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
@@ -145,9 +156,26 @@ public class CreateMatchFragment extends Fragment {
             if(!matchSetsFragment.validate()) {
                 return;
             }
-            // save match
+
+
             match.setDate(new Timestamp(System.currentTimeMillis()));
-            matchDao.add(match);
+            Match deleteMatch = matchDao.safeAdd(match);
+
+            if(deleteMatch != null){
+                CreateMatchDto createMatchDto = new CreateMatchDto(deleteMatch);
+
+                apiService.execute(matchApi.addMatch(createMatchDto), response -> {
+                    System.out.println(response.errorBody());
+                    System.out.println(response);
+                    if(response.isSuccessful()) {
+                        System.out.println("all good");
+                    }
+                });
+            }
+
+
+
+
 
             NavHostFragment.findNavController(this).popBackStack();
             return;

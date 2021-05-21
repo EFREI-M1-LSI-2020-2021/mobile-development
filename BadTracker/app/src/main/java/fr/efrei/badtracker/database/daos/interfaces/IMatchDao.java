@@ -7,4 +7,6 @@ import fr.efrei.badtracker.models.Match;
 public interface IMatchDao extends IDao<Match> {
     long add(Match match);
     List<Match> getAll();
+
+    Match safeAdd(Match match);
 }
