@@ -1,6 +1,5 @@
-package fr.efrei.badtracker.fragments.main.viewHolder;
+package fr.efrei.badtracker.fragments.main.view_holders;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 

@@ -95,5 +95,10 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
+        <argument
+            android:name="sets"
+            app:argType="fr.efrei.badtracker.models.Sets"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

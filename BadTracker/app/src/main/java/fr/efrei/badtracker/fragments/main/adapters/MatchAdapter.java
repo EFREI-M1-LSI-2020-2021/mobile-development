@@ -1,6 +1,5 @@
 package fr.efrei.badtracker.fragments.main.adapters;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.fragments.main.viewHolder.MatchViewHolder;
+import fr.efrei.badtracker.fragments.main.view_holders.MatchViewHolder;
 import fr.efrei.badtracker.models.Match;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchViewHolder>

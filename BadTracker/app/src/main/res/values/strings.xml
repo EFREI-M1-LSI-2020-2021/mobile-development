@@ -18,4 +18,14 @@
     <string name="take_picture">Take picture</string>
     <string name="create_image_file">Failed to create image file</string>
     <string name="local_matches">Local matches</string>
+    <string name="team_2_players">Team 2 players</string>
+    <string name="team_1_players">Team 1 players</string>
+    <string name="create_player">Create player</string>
+    <string name="sex">Sex</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="other">Other</string>
+    <string name="nationality">Nationality</string>
+    <string name="create">Create</string>
+    <string name="firstname">Firstname</string>
 </resources>

@@ -36,7 +36,6 @@ public class MatchPhotoFragment extends Fragment {
 
     private ImageView photo;
     private View view;
-
     private File photoFile;
     private boolean valid = false;
     private CreateMatchFragment createMatchFragment;
@@ -70,6 +69,7 @@ public class MatchPhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             updatePhoto();
+            save();
         }
     }
 

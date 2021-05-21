@@ -30,6 +30,8 @@ import fr.efrei.badtracker.fragments.create_match.fragments.MatchSetsFragmentDir
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.models.Sets;
+import fr.efrei.badtracker.models.Team;
 
 public class CreateMatchFragment extends Fragment {
 
@@ -68,6 +70,8 @@ public class CreateMatchFragment extends Fragment {
         navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
+        setRetainInstance(true);
+
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setNavigationOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
@@ -88,6 +92,9 @@ public class CreateMatchFragment extends Fragment {
             Object obj = savedInstanceState.getSerializable("match");
             if(obj != null) {
                 match = (Match) obj;
+            }
+            else {
+                match = new Match();
             }
         }
 
@@ -124,15 +131,24 @@ public class CreateMatchFragment extends Fragment {
                 if(!matchPhotoFragment.validate()) {
                     return;
                 }
-                direction = MatchPhotoFragmentDirections.MatchPhotoToPlayers();
+                MatchPhotoFragmentDirections.MatchPhotoToPlayers photoToPlayers = MatchPhotoFragmentDirections.MatchPhotoToPlayers();
+                photoToPlayers.setTeam1((Team) match.getTeam1());
+                photoToPlayers.setTeam2((Team) match.getTeam2());
+                direction = photoToPlayers;
                 break;
             case 2:
                 MatchPlayersFragment matchPlayersFragment = (MatchPlayersFragment) fragment;
                 if(!matchPlayersFragment.validate()) {
                     return;
                 }
-                direction = MatchPlayersFragmentDirections.MatchPlayersToSets();
+                MatchPlayersFragmentDirections.MatchPlayersToSets playersToSets = MatchPlayersFragmentDirections.MatchPlayersToSets();
+                playersToSets.setSets((Sets) match.getSets());
+                direction = playersToSets;
                 break;
+        }
+
+        if(direction == null) {
+            return;
         }
 
         index++;
@@ -148,20 +164,9 @@ public class CreateMatchFragment extends Fragment {
     }
 
     public void back(View view) {
-        index--;
-        if(index == 0) {
-            backButton.setVisibility(View.GONE);
-        }
-
-        if(done) {
-            nextButton.setText(R.string.next);
-            done = false;
-        }
-        progressBar.setProgress(progressBar.getProgress() - 25);
-
         NavDirections direction = null;
 
-        switch (index) {
+        switch (index - 1) {
             case 0:
                 MatchPhotoFragmentDirections.MatchPhotoToInfo photoToInfo = MatchPhotoFragmentDirections.MatchPhotoToInfo();
                 photoToInfo.setName(match.getName());
@@ -174,9 +179,27 @@ public class CreateMatchFragment extends Fragment {
                 direction = playersToPhoto;
                 break;
             case 2:
-                direction = MatchSetsFragmentDirections.MatchSetsToPlayers();
+                MatchSetsFragmentDirections.MatchSetsToPlayers setsToPlayers = MatchSetsFragmentDirections.MatchSetsToPlayers();
+                setsToPlayers.setTeam1((Team) match.getTeam1());
+                setsToPlayers.setTeam2((Team) match.getTeam2());
+                direction = setsToPlayers;
                 break;
         }
+
+        if(direction == null) {
+            return;
+        }
+
+        index--;
+        if(index == 0) {
+            backButton.setVisibility(View.GONE);
+        }
+
+        if(done) {
+            nextButton.setText(R.string.next);
+            done = false;
+        }
+        progressBar.setProgress(progressBar.getProgress() - 25);
 
         navController.navigate(direction);
     }
