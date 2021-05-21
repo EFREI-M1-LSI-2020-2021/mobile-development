@@ -37,10 +37,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private DbHelper(@Nullable Context context) {
         // in memory database
-        super(context, null, null, DATABASE_VERSION);
+        //super(context, null, null, DATABASE_VERSION);
 
         // file database
-        //super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         daos.put(IPlayerDao.class, new PlayerDao(this));
         daos.put(IMatchLocationDao.class, new MatchLocationDao(this));

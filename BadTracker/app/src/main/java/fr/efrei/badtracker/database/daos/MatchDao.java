@@ -4,6 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -80,6 +85,21 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
     @Override
     public long add(Match match) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        List<Match> checkMatches = this.getAll();
+
+        if(checkMatches.size() >= 5){
+            match = checkMatches.get(0);
+            this.delete(match);
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Date.class, (JsonSerializer<Date>) (date, type, jsonSerializationContext) -> new JsonPrimitive(date.getTime()))
+                    .create();
+
+
+            gson.toJson(match);
+
+            //Push to API
+        }
 
         long matchLocationId = matchLocationDao.add(match.getLocation());
 

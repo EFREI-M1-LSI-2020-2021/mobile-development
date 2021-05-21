@@ -149,11 +149,6 @@ public class CreateMatchFragment extends Fragment {
             match.setDate(new Timestamp(System.currentTimeMillis()));
             matchDao.add(match);
 
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Date.class, (JsonSerializer<Date>) (date, type, jsonSerializationContext) -> new JsonPrimitive(date.getTime()))
-                    .create();
-            System.out.println(gson.toJson(match));
-
             NavHostFragment.findNavController(this).popBackStack();
             return;
         }
