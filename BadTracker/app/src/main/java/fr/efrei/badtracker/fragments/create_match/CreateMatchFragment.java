@@ -16,6 +16,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
@@ -142,6 +146,12 @@ public class CreateMatchFragment extends Fragment {
             // save match
             match.setDate(new Timestamp(System.currentTimeMillis()));
             matchDao.add(match);
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> new Date(json.getAsJsonPrimitive().getAsLong()))
+                    .create();
+            System.out.println(gson.toJson(match));
+
             NavHostFragment.findNavController(this).popBackStack();
             return;
         }
