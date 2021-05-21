@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_match">Création d\'un match</string>
+    <string name="matches_map">Carte des matchs</string>
+    <string name="add_a_new_match">Ajouter un nouveau match</string>
+    <string name="back">Retour</string>
+    <string name="next">Suivant</string>
+    <string name="add">Ajouter</string>
+    <string name="settings">Paramètres</string>
+    <string name="open">Ouvrir</string>
+    <string name="name">Nom</string>
+    <string name="required_location_permission">La permission de localisation est nécessaire</string>
+    <string name="permission_denied_explanation">La permission est réfusée mais necessaire</string>
+    <string name="take_picture">Prendre une photo</string>
+    <string name="create_image_file">Impossible de créer la photo</string>
+    <string name="local_matches">Match local</string>
+    <string name="team_2_players">Joueurs équipe 2</string>
+    <string name="team_1_players">Joueurs équipe 1</string>
+    <string name="create_player">Créer un joueur</string>
+    <string name="sex">Sexe</string>
+    <string name="female">Femme</string>
+    <string name="male">Homme</string>
+    <string name="other">Autre</string>
+    <string name="nationality">Nationalité</string>
+    <string name="create">Création</string>
+    <string name="firstname">Prénom</string>
+    <string name="score_team_2">Score équipe 2</string>
+    <string name="score_team_1">Score équipe 1</string>
+    <string name="create_set">Créer un set</string>
+</resources>
