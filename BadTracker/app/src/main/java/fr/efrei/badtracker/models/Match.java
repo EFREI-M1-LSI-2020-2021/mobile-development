@@ -48,8 +48,8 @@ public class Match implements Serializable {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         _ID + " INTEGER PRIMARY KEY," +
                         COLUMN_NAME + " TEXT," +
-                        COLUMN_LOCATION + " INTEGER" +
-                        COLUMN_IMAGE + " TEXT)" +
+                        COLUMN_LOCATION + " INTEGER," +
+                        COLUMN_IMAGE + " TEXT," +
                         COLUMN_DATE + " UNSIGNED BIG INT);";
 
         public static final String SQL_DELETE_ENTRIES =

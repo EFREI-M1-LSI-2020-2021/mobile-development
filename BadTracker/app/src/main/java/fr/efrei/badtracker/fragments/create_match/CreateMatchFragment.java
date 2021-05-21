@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -17,9 +18,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.database.DbHelper;
+import fr.efrei.badtracker.database.daos.MatchDao;
+import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragmentDirections;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchPhotoFragment;
@@ -36,18 +42,23 @@ import fr.efrei.badtracker.models.Sets;
 import fr.efrei.badtracker.models.Team;
 
 public class CreateMatchFragment extends Fragment {
-
-    private int index = 0;
-    private final int max = 3;
-    private boolean done = false;
-
     private NavHostFragment navHostFragment;
     private NavController navController;
     private ProgressBar progressBar;
     private Button nextButton;
     private Button backButton;
 
+    private int index = 0;
+    private final int max = 3;
+    private boolean done = false;
     private Match match = new Match();
+    private IMatchDao matchDao;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        matchDao = DbHelper.getInstance(this.getContext()).getDao(IMatchDao.class);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
@@ -129,6 +140,8 @@ public class CreateMatchFragment extends Fragment {
                 return;
             }
             // save match
+            match.setDate(new Timestamp(System.currentTimeMillis()));
+            matchDao.add(match);
             NavHostFragment.findNavController(this).popBackStack();
             return;
         }

@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.database.DbHelper;
 import fr.efrei.badtracker.fragments.main.adapters.PageAdapter;
 
 public class MainFragment extends Fragment {
@@ -20,14 +21,6 @@ public class MainFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private FloatingActionButton fab;
-
-    public MainFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
