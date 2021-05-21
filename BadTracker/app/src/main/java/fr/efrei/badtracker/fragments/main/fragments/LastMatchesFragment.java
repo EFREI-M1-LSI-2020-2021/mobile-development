@@ -46,6 +46,7 @@ public class LastMatchesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
 
+        matches.clear();
         matches.addAll(matchDao.getAll());
         adapter.notifyDataSetChanged();
 
