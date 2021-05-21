@@ -2,10 +2,13 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 public class Player implements Serializable {
-    private long id;
+
+    private transient long id;
     private String name;
     private String firstName;
     private Sex sex;

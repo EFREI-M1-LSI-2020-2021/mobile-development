@@ -3,10 +3,13 @@ package fr.efrei.badtracker.models;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 public class MatchLocation implements Serializable {
-    private long id;
+
+    private transient long id;
     private double latitude;
     private double longitude;
 

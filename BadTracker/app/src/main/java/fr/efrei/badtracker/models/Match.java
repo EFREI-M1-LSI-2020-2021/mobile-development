@@ -2,6 +2,8 @@ package fr.efrei.badtracker.models;
 
 import android.provider.BaseColumns;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -9,10 +11,11 @@ import java.util.Date;
 import java.util.List;
 
 public class Match implements Serializable {
-    private long id;
+    
+    private transient long id;
     private String name;
     private MatchLocation location;
-    private String image;
+    private transient String image;
     private Timestamp date;
     private List<Player> team1;
     private List<Player> team2;
