@@ -21,7 +21,7 @@ public class ApiTask<T> extends AsyncTask<Call<T>, Void, Response<T>> {
         Call<T> call = params[0];
 
         try {
-            return (Response<T>) call.execute();
+            return call.execute();
         } catch (IOException e) {
             e.printStackTrace();
         }

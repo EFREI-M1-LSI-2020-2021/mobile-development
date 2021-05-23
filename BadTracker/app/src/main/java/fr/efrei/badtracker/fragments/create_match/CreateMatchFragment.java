@@ -1,5 +1,6 @@
 package fr.efrei.badtracker.fragments.create_match;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,27 +17,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
+import fr.efrei.badtracker.Utils;
 import fr.efrei.badtracker.api.MatchApi;
 import fr.efrei.badtracker.api.dtos.CreateMatchDto;
-import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.database.DbHelper;
-import fr.efrei.badtracker.database.daos.MatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragmentDirections;
@@ -55,6 +45,7 @@ import fr.efrei.badtracker.models.Team;
 import fr.efrei.badtracker.services.ApiService;
 
 public class CreateMatchFragment extends Fragment {
+    private View view;
     private NavHostFragment navHostFragment;
     private NavController navController;
     private ProgressBar progressBar;
@@ -85,7 +76,7 @@ public class CreateMatchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_match, container, false);
+        view = inflater.inflate(R.layout.fragment_create_match, container, false);
 
         apiService = ApiService.getInstance();
         matchApi = apiService.getMatchApi();
@@ -116,16 +107,12 @@ public class CreateMatchFragment extends Fragment {
         MutableLiveData<Integer> indexData = NavHostFragment.findNavController(this).getCurrentBackStackEntry()
                 .getSavedStateHandle()
                 .getLiveData("index");
-        indexData.observe(getViewLifecycleOwner(), index -> {
-            updateState(index);
-        });
+        indexData.observe(getViewLifecycleOwner(), this::updateState);
 
         MutableLiveData<Match> matchData = NavHostFragment.findNavController(this).getCurrentBackStackEntry()
                 .getSavedStateHandle()
                 .getLiveData("Match");
-        matchData.observe(getViewLifecycleOwner(), match -> {
-            this.match = match;
-        });
+        matchData.observe(getViewLifecycleOwner(), match -> this.match = match);
 
         nextButton.setOnClickListener(this::next);
         backButton.setOnClickListener(this::back);
@@ -157,27 +144,27 @@ public class CreateMatchFragment extends Fragment {
                 return;
             }
 
+            ProgressDialog dialog = new ProgressDialog(getContext());
+            dialog.setTitle(R.string.create_new_match);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setIndeterminate(true);
+            dialog.show();
 
             match.setDate(new Timestamp(System.currentTimeMillis()));
-            Match deleteMatch = matchDao.safeAdd(match);
+            matchDao.safeAdd(match);
 
-            if(deleteMatch != null){
-                CreateMatchDto createMatchDto = new CreateMatchDto(deleteMatch);
+            CreateMatchDto createMatchDto = new CreateMatchDto(match);
 
-                apiService.execute(matchApi.addMatch(createMatchDto), response -> {
-                    System.out.println(response.errorBody());
-                    System.out.println(response);
-                    if(response.isSuccessful()) {
-                        System.out.println("all good");
-                    }
-                });
-            }
+            apiService.execute(matchApi.addMatch(createMatchDto), response -> {
+                dialog.dismiss();
+                if(response.isSuccessful()) {
+                    NavHostFragment.findNavController(this).popBackStack();
+                }
+                else {
+                    Utils.showSnackbar(view, R.string.failed_save_online_match, -1, null);
+                }
+            });
 
-
-
-
-
-            NavHostFragment.findNavController(this).popBackStack();
             return;
         }
         NavDirections direction = null;

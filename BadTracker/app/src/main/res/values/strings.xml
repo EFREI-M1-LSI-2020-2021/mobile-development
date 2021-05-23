@@ -26,8 +26,10 @@
     <string name="other">Other</string>
     <string name="nationality">Nationality</string>
     <string name="create">Create</string>
-    <string name="firstname">Firstname</string>
+    <string name="firstName">Firstname</string>
     <string name="score_team_2">Score team 2</string>
     <string name="score_team_1">Score team 1</string>
     <string name="create_set">Create set</string>
+    <string name="failed_save_online_match">Failed to save this match online</string>
+    <string name="create_new_match">Creating the new match…</string>
 </resources>

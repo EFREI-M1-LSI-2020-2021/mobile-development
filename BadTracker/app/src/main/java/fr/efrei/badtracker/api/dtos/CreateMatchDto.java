@@ -1,8 +1,5 @@
 package fr.efrei.badtracker.api.dtos;
 
-import android.location.Location;
-
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
