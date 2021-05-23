@@ -17,28 +17,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.Utils;
 import fr.efrei.badtracker.api.MatchApi;
 import fr.efrei.badtracker.api.dtos.CreateMatchDto;
-import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.database.DbHelper;
-import fr.efrei.badtracker.database.daos.MatchDao;
 import fr.efrei.badtracker.database.daos.interfaces.IMatchDao;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragment;
 import fr.efrei.badtracker.fragments.create_match.fragments.MatchInfoFragmentDirections;

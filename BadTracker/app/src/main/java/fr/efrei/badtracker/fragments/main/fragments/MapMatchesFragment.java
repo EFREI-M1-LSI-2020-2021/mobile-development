@@ -12,16 +12,13 @@ import android.view.ViewGroup;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -30,14 +27,10 @@ import java.util.List;
 import java.util.Map;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.api.ApiTask;
 import fr.efrei.badtracker.api.MatchApi;
-import fr.efrei.badtracker.api.dtos.LocationDto;
-import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.services.ApiService;
-import retrofit2.Response;
 
 public class MapMatchesFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
