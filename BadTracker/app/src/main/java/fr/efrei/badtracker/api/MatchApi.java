@@ -6,6 +6,7 @@ import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.api.dtos.SetDto;
 import fr.efrei.badtracker.api.dtos.CreateMatchDto;
 import fr.efrei.badtracker.api.dtos.PlayerDto;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,16 +18,7 @@ import retrofit2.http.Path;
 public interface MatchApi {
 
     @POST("matches")
-    Call<String> addMatch(@Body CreateMatchDto createMatchDto);
-
-    @PATCH("matches/{id}/sets")
-    Call<String> addSet(@Path("id") int id, @Body SetDto setDto);
-
-    @PATCH("matches/{id}/team1")
-    Call<String> addTeam1(@Path("id") int id, @Body List<PlayerDto> team1);
-
-    @PATCH("matches/{id}/team2")
-    Call<String> addTeam2(@Path("id") int id, @Body List<PlayerDto> team2);
+    Call<ResponseBody> addMatch(@Body CreateMatchDto createMatchDto);
 
     @GET("matches")
     Call<List<MatchDto>> getMatches();

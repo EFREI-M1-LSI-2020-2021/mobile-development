@@ -136,7 +136,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
                 null,
                 null,
                 null,
-                null
+                MatchEntry._ID + " ASC"
         );
 
         if(cursor == null) {
@@ -191,20 +191,14 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
     }
 
     @Override
-    public Match safeAdd(Match match){
+    public void safeAdd(Match match){
 
         this.add(match);
         List<Match> checkMatches = this.getAll();
 
-        if(checkMatches.size() >= 5){
+        if(checkMatches.size() > 5){
             Match deleteMatch = checkMatches.get(0);
             this.delete(deleteMatch);
-
-            return deleteMatch;
         }
-
-
-
-        return null;
     }
 }

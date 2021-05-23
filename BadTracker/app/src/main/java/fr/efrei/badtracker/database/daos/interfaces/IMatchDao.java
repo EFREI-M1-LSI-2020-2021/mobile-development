@@ -8,5 +8,5 @@ public interface IMatchDao extends IDao<Match> {
     long add(Match match);
     List<Match> getAll();
 
-    Match safeAdd(Match match);
+    void safeAdd(Match match);
 }
