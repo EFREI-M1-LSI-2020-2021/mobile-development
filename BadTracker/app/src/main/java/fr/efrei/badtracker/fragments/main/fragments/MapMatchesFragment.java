@@ -28,6 +28,7 @@ import java.util.Map;
 
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.api.MatchApi;
+import fr.efrei.badtracker.api.dtos.MatchDto;
 import fr.efrei.badtracker.models.Match;
 import fr.efrei.badtracker.models.MatchLocation;
 import fr.efrei.badtracker.services.ApiService;

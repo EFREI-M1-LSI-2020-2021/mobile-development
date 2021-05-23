@@ -23,8 +23,10 @@
     <string name="other">Autre</string>
     <string name="nationality">Nationalité</string>
     <string name="create">Création</string>
-    <string name="firstname">Prénom</string>
     <string name="score_team_2">Score équipe 2</string>
     <string name="score_team_1">Score équipe 1</string>
     <string name="create_set">Créer un set</string>
+    <string name="firstName">Prénom</string>
+    <string name="create_new_match">Création du nouveau match</string>
+    <string name="failed_save_online_match">Impossible de sauvegarder le match en lign</string>
 </resources>

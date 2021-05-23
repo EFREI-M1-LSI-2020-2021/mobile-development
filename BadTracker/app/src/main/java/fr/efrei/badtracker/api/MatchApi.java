@@ -3,6 +3,7 @@ package fr.efrei.badtracker.api;
 import java.util.List;
 
 import fr.efrei.badtracker.api.dtos.CreateMatchDto;
+import fr.efrei.badtracker.api.dtos.MatchDto;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
