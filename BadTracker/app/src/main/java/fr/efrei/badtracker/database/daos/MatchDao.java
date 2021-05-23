@@ -114,7 +114,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
                 player.setId(playerId);
             }
 
-            matchPlayerDao.add(new MatchPlayer(matchId, playerId, true));
+            matchPlayerDao.add(new MatchPlayer(matchId, playerId, false));
         }
 
         for(Set set : match.getSets()) {

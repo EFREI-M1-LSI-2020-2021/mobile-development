@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import fr.efrei.badtracker.R;
 import fr.efrei.badtracker.fragments.create_match.CreateMatchFragment;
-import fr.efrei.badtracker.fragments.create_match.adapters.SetAdapter;
+import fr.efrei.badtracker.adapters.SetAdapter;
 import fr.efrei.badtracker.models.Set;
 import fr.efrei.badtracker.models.Sets;
 

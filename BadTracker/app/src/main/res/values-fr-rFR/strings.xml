@@ -6,7 +6,6 @@
     <string name="back">Retour</string>
     <string name="next">Suivant</string>
     <string name="add">Ajouter</string>
-    <string name="settings">Paramètres</string>
     <string name="open">Ouvrir</string>
     <string name="name">Nom</string>
     <string name="required_location_permission">La permission de localisation est nécessaire</string>
@@ -29,4 +28,8 @@
     <string name="firstName">Prénom</string>
     <string name="create_new_match">Création du nouveau match</string>
     <string name="failed_save_online_match">Impossible de sauvegarder le match en lign</string>
+    <string name="information">Informations</string>
+    <string name="players">Joueurs</string>
+    <string name="sets">Sets</string>
+    <string name="settings">"Paramètres "</string>
 </resources>

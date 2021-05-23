@@ -3,6 +3,7 @@ package fr.efrei.badtracker.fragments.create_player;
 import android.os.Bundle;
 
 import androidx.annotation.IdRes;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -37,6 +38,10 @@ public class CreatePlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_player, container, false);
         setRetainInstance(true);
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
 
         args = getArguments();
 

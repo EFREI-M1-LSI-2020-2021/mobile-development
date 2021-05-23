@@ -1,4 +1,4 @@
-package fr.efrei.badtracker.fragments.create_match.adapters;
+package fr.efrei.badtracker.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.fragments.create_match.view_holders.PlayerViewHolder;
-import fr.efrei.badtracker.fragments.create_match.view_holders.SetViewHolder;
-import fr.efrei.badtracker.models.Player;
+import fr.efrei.badtracker.view_holders.SetViewHolder;
 import fr.efrei.badtracker.models.Set;
 
 public class SetAdapter extends RecyclerView.Adapter<SetViewHolder>

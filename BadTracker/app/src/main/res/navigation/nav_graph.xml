@@ -16,12 +16,6 @@
             app:exitAnim="@android:anim/fade_out"
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
-            android:id="@+id/MainToSettings"
-            app:destination="@id/Settings"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@android:anim/fade_out"
-            app:popExitAnim="@anim/slide_out_bottom" />
-        <action
             android:id="@+id/MainToCreateMatch"
             app:destination="@id/CreateMatch"
             app:enterAnim="@anim/slide_in_bottom"
@@ -55,11 +49,6 @@
             android:name="match"
             app:argType="fr.efrei.badtracker.models.Match" />
     </fragment>
-    <fragment
-        android:id="@+id/Settings"
-        android:name="fr.efrei.badtracker.fragments.settings.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/CreatePlayer"
         android:name="fr.efrei.badtracker.fragments.create_player.CreatePlayerFragment"

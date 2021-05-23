@@ -1,4 +1,4 @@
-package fr.efrei.badtracker.fragments.create_match.view_holders;
+package fr.efrei.badtracker.view_holders;
 
 import android.view.View;
 import android.widget.TextView;
@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.efrei.badtracker.R;
-import fr.efrei.badtracker.models.Player;
 import fr.efrei.badtracker.models.Set;
 
 public class SetViewHolder extends RecyclerView.ViewHolder
