@@ -34,7 +34,7 @@ public class ApiTask<T> extends AsyncTask<Call<T>, Void, Response<T>> {
         listener.onResponse(response);
     }
 
-    public interface Listener<T> {
-        void onResponse(Response<T> result);
+    public interface Listener<A> {
+        void onResponse(Response<A> result);
     }
 }

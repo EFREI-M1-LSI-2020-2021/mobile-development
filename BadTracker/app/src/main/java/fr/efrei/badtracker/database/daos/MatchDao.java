@@ -91,7 +91,7 @@ public class MatchDao extends EntityDao<Match> implements IMatchDao {
         ContentValues values = new ContentValues();
         values.put(MatchEntry.COLUMN_NAME, match.getName());
         values.put(MatchEntry.COLUMN_LOCATION, matchLocationId);
-        values.put(MatchEntry.COLUMN_IMAGE, match.getName());
+        values.put(MatchEntry.COLUMN_IMAGE, match.getImage());
         values.put(MatchEntry.COLUMN_DATE, match.getDate().getTime());
 
         long matchId = db.insert(MatchEntry.TABLE_NAME, null, values);
