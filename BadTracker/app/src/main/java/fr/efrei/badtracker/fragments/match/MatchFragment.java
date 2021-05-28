@@ -78,7 +78,7 @@ public class MatchFragment extends Fragment {
         title.setText(match.getName());
         date.setText(df.format(match.getDate()));
 
-        new BackgroundTask((BackgroundTask.Execute<List<Address>>) () -> {
+        BackgroundTask task = new BackgroundTask((BackgroundTask.Execute<List<Address>>) () -> {
             MatchLocation matchLocation = match.getLocation();
             try {
                 return geocoder.getFromLocation(matchLocation.getLatitude(),
@@ -92,6 +92,7 @@ public class MatchFragment extends Fragment {
                 location.setText(result.get(0).getAddressLine(0));
             }
         });
+        task.execute();
 
         if(match.getImage() != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(match.getImage());

@@ -2,7 +2,7 @@ package fr.efrei.badtracker.models;
 
 import android.os.AsyncTask;
 
-public class BackgroundTask<K> extends AsyncTask<Void, Void, K> {
+public class BackgroundTask<K> extends AsyncTask<Object, Void, K> {
 
     private Execute<K> execute;
     private Listener<K> listener;
@@ -13,7 +13,7 @@ public class BackgroundTask<K> extends AsyncTask<Void, Void, K> {
     }
 
     @Override
-    protected K doInBackground(Void... voids) {
+    protected K doInBackground(Object... objects) {
         return execute.run();
     }
 
