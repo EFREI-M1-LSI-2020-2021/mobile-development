@@ -1,3 +1,7 @@
+During the last session (could be before), I will make sure that you've almost finished the app and that you fully master the code you're presenting. Be aware that failing the presentation would automatically lead to failing the project !
+
+
+
 The goal of this project is to deliver a sporting app that would enable coaches to save significant information about matches and debrief objectively using statistics with their players.
 
 A good app to "copy" is "tennis tracker" (look it up - https://play.google.com/store/apps/details?id=com.nabocorp.tennistracker.android.tennistracker&hl=fr).
@@ -19,6 +23,7 @@ Design constraints :
 7- UP TO YOU TO DEFINE MORE FUNCTIONS  
 
 
+
 Submit your work here (name1_name2.zip) :
 
 1- a report containing the following information in this specific order :
@@ -32,6 +37,10 @@ Submit your work here (name1_name2.zip) :
  - your app architecture, its implementation and screenshots
 
 
+
 2- your app code
 
 In case you project is too big to upload here, just submit the java files + XML resources (Layouts, strings) + Manifest.
+
+
+
